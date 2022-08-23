@@ -18,16 +18,10 @@ class MainActivity : AppCompatActivity() {
         var welcome: TextView = findViewById(R.id.hello_text)
 
         button.setOnClickListener {
-            val name = editText.text.toString()
+            val name : String = editText.text.toString()
 
-            if (name.isEmpty())
-                Toast
-                    .makeText(
-                        this,
-                        "Please Enter you name!",
-                        Toast.LENGTH_SHORT
-                    )
-                    .show()
+            if (!name.matches(".*[a-zA-Z].*".toRegex()) )
+                Toast.makeText(this,"Please Enter you name!",Toast.LENGTH_SHORT).show()
             else
                 welcome.text = "Hello ${name} ";
 
