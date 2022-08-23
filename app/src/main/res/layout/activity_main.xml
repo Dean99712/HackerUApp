@@ -21,7 +21,6 @@
         android:id="@+id/hello_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onButtonClick"
         android:text="Press Me"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +42,9 @@
         android:inputType="text"
 
         android:textSize="12dp"
-        ></EditText>
+        >
+
+    </EditText>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
