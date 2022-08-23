@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         button.setOnClickListener {
             val name : String = editText.text.toString()
 
-            if (!name.matches(".*[a-zA-Z].*".toRegex()))
+            if (!name.matches(".*[a-zA-Z].*".toRegex()) )
                 Toast.makeText(this,"Please Enter you name!",Toast.LENGTH_SHORT).show()
             else
                 welcome.text = "Hello ${name} ";
