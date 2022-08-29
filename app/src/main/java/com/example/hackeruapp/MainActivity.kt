@@ -1,31 +1,55 @@
 package com.example.hackeruapp
 
+import android.app.Person
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        }
 
-        var button: Button = findViewById(R.id.hello_button)
-        var editText: EditText = findViewById(R.id.name)
-        var welcome: TextView = findViewById(R.id.hello_text)
+    private fun displayPersonDetailsFragment() {
+        val personFragment = PersonFragment()
+        supportFragmentManager.beginTransaction().add(R.id.fragment, personFragment)
+            .commit()
+    }
 
+    private fun setButton3ClickListener() {
+        val button = findViewById<Button>(R.id.hello_button)
         button.setOnClickListener {
-            val name : String = editText.text.toString()
+            Toast.makeText(this, "Hi im toast", Toast.LENGTH_SHORT).show()
+            createRecyclerView()
 
-            if (!name.matches(".*[a-zA-Z].*".toRegex()) )
-                Toast.makeText(this,"Please Enter you name!",Toast.LENGTH_SHORT).show()
-            else
-                welcome.text = "Hello ${name} ";
+            val secondTitleTextView = TextView(applicationContext)
 
         }
+
+    }
+
+    private fun createViewProgremathic() {
+
+        val secondTitle
+    }
+
+//    private fun getPersonList(): MutableList<Person> {
+//        val personList = mutableListOf<Person>()
+//        personList.add(Person("Daniella", 30))
+//        personList.add(Person("Boaz", 52))
+//        personList.add(Person("Shoam", 26))
+//        personList.add(Person("Ron", 21))
+//        personList.add(Person("Naor", 43))
+//        personList.add(Person("Mia", 29))
+//        personList.add(Person("Oriel", 23))
+//    }
+
+    private fun createRecyclerView() {
+
 
     }
 
