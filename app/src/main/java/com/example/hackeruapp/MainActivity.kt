@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ListView
-import androidx.recyclerview.widget.RecyclerView
 
 
 class MainActivity : AppCompatActivity() {
@@ -44,7 +43,7 @@ class MainActivity : AppCompatActivity() {
     private fun createList() {
         val listView = findViewById<ListView>(R.id.list_view)
         val personList = getPersonList()
-        val myAdapter = ArrayAdapter(this, R.layout.simple_layout, personList)
+        val myAdapter = ArrayAdapter(this, R.layout.item_layout, personList)
         listView.adapter = myAdapter
     }
 
