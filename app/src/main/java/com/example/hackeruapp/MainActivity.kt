@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ListView
-import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 
 
 class MainActivity : AppCompatActivity() {
@@ -20,8 +20,7 @@ class MainActivity : AppCompatActivity() {
         val button = findViewById<Button>(R.id.add_button)
         button.setOnClickListener {
             createList()
-
-            val secondTitleTextView = TextView(applicationContext)
+//            createRecyclerView()
 
         }
 
@@ -39,16 +38,23 @@ class MainActivity : AppCompatActivity() {
         personList.add(Person("Mia", 29))
         personList.add(Person("Oriel", 23))
 
-
-
         return personList
     }
 
     private fun createList() {
-        val listView = findViewById<ListView>(R.id.recycler_view)
+        val listView = findViewById<ListView>(R.id.list_view)
         val personList = getPersonList()
-        val myAdapter = ArrayAdapter(this, R.layout.item_layout, personList)
+        val myAdapter = ArrayAdapter(this, R.layout.simple_layout, personList)
         listView.adapter = myAdapter
     }
+
+//    private fun createRecyclerView() {
+//        val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
+//        val personList = getPersonList()
+//        val adapter = RecyclerAdapter(personList)
+//        recyclerView.adapter = adapter
+//
+//
+//    }
 
 }

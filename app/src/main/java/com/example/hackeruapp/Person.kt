@@ -1,3 +1,3 @@
 package com.example.hackeruapp
 
-data class Person(private val name: String, private val age : Int)
+data class Person(val name: String, val age : Int)
