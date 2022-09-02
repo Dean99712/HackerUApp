@@ -8,6 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="75dp"
+        android:layout_margin="5dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,14 +23,15 @@
             android:layout_width="9dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            tools:src="@tools:sample/avatars" />
+            android:src="@drawable/avatar1_foreground" />
 
         <TextView
             android:id="@+id/item_name"
             android:layout_width="211dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
             android:layout_weight="1"
-            android:gravity="start|center_horizontal|center_vertical"
+            android:gravity="center|fill_horizontal"
             android:text="TextView" />
 
         <ImageButton
@@ -37,7 +39,7 @@
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            tools:ignore="SpeakableTextPresentCheck"
-            tools:src="@drawable/delete_foreground" />
+            android:src="@drawable/delete_outline_foreground"
+            tools:ignore="SpeakableTextPresentCheck" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
