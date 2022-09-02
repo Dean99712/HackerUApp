@@ -6,7 +6,7 @@
         <entry key="..\:/Users/dean2/AndroidStudioProjects/HackerUApp/app/src/main/res/drawable/avatar.xml" value="0.2325" />
         <entry key="..\:/Users/dean2/AndroidStudioProjects/HackerUApp/app/src/main/res/drawable/delete_outline_foreground.xml" value="0.1" />
         <entry key="..\:/Users/dean2/AndroidStudioProjects/HackerUApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2885" />
-        <entry key="..\:/Users/dean2/AndroidStudioProjects/HackerUApp/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/dean2/AndroidStudioProjects/HackerUApp/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/dean2/AndroidStudioProjects/HackerUApp/app/src/main/res/layout/activity_new.xml" value="0.1" />
         <entry key="..\:/Users/dean2/AndroidStudioProjects/HackerUApp/app/src/main/res/layout/fragment_blank.xml" value="0.3786231884057971" />
         <entry key="..\:/Users/dean2/AndroidStudioProjects/HackerUApp/app/src/main/res/layout/item_layout.xml" value="0.3859375" />
@@ -30,7 +30,7 @@
   <component name="VisualizationToolProject">
     <option name="state">
       <ProjectState>
-        <option name="scale" value="0.33" />
+        <option name="scale" value="0.1" />
       </ProjectState>
     </option>
   </component>
