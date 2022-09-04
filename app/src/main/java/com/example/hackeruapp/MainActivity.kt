@@ -2,45 +2,48 @@ package com.example.hackeruapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 
 
 class MainActivity : AppCompatActivity() {
 
-    var itemList = mutableListOf<Item>()
-    lateinit var itemImage: Array<Int>
+    var itemList = arrayListOf<Item>()
     var adapter = RecyclerAdapter(itemList)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setButton3ClickListener()
-
-        itemImage = arrayOf(
-            R.drawable.avatar1_foreground,
-            R.drawable.avatar2_foreground,
-            R.drawable.avatar3_foreground
-        )
+        setButtonClickListener()
     }
 
 
-    private fun setButton3ClickListener() {
+    private fun setButtonClickListener() {
         val button = findViewById<Button>(R.id.add_button)
         val input = findViewById<EditText>(R.id.item_name_input)
 
         button.setOnClickListener {
+
+            val radioGroup = findViewById<RadioGroup>(R.id.radioItemSelect)
+            val checkedId =  radioGroup.checkedRadioButtonId
             adapter.notifyDataSetChanged()
+
             if (input.text.isNullOrEmpty())
-                Toast.makeText(this, "learn how to write!", Toast.LENGTH_SHORT).show()
-            else
-                itemList.add(Item(input.text.toString(), itemImage.get(1)))
+                Toast.makeText(this, "Please enter a valid Input", Toast.LENGTH_SHORT).show()
+
+            else {
+                when(checkedId) {
+                    R.id.radioButton1 -> itemList.add(Item(input.text.toString(),R.drawable.avatar1_foreground))
+                    R.id.radioButton2 -> itemList.add(Item(input.text.toString(),R.drawable.avatar2_foreground))
+                    R.id.radioButton3 -> itemList.add(Item(input.text.toString(),R.drawable.avatar3_foreground))
+                }
+            }
         }
+
         createRecyclerView()
     }
+
 
     private fun createRecyclerView() {
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
@@ -48,6 +51,8 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
+
+
 
 
 
