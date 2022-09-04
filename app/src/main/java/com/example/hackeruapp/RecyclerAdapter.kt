@@ -8,13 +8,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class RecyclerAdapter(private val itemList: ArrayList<Item>)
+class RecyclerAdapter(private val personList: ArrayList<Person>, var onItemClick : (Person) -> Unit)
     : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
+//    var onItemClick : ((Person) -> Unit)? = null
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView = itemView.findViewById(R.id.item_name)
         val imageView : ImageView = itemView.findViewById(R.id.item_image)
         val removeBtn : ImageButton = itemView.findViewById(R.id.remove_button)
+
 
     }
 
@@ -24,19 +26,23 @@ class RecyclerAdapter(private val itemList: ArrayList<Item>)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = itemList[position]
+        val item = personList[position]
 
         holder.textView.text = item.name
         holder.imageView.setImageResource(item.image)
 
+        holder.itemView.setOnClickListener{
+            onItemClick(personList[position])
+        }
+
         holder.removeBtn.setOnClickListener{
-            itemList.removeAt(holder.layoutPosition)
+            personList.removeAt(holder.layoutPosition)
             notifyItemRemoved(position)
         }
     }
 
     override fun getItemCount(): Int {
-        return itemList.size
+        return personList.size
     }
 
 }
