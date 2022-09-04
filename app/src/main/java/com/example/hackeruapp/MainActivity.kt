@@ -37,16 +37,16 @@ class MainActivity : AppCompatActivity() {
         val secondTitle
     }
 
-//    private fun getPersonList(): MutableList<Person> {
-//        val personList = mutableListOf<Person>()
-//        personList.add(Person("Daniella", 30))
-//        personList.add(Person("Boaz", 52))
-//        personList.add(Person("Shoam", 26))
-//        personList.add(Person("Ron", 21))
-//        personList.add(Person("Naor", 43))
-//        personList.add(Person("Mia", 29))
-//        personList.add(Person("Oriel", 23))
-//    }
+    private fun getPersonList(): MutableList<Person> {
+        val personList = mutableListOf<Person>()
+        personList.add(Person("Daniella", 30))
+        personList.add(Person("Boaz", 52))
+        personList.add(Person("Shoam", 26))
+        personList.add(Person("Ron", 21))
+        personList.add(Person("Naor", 43))
+        personList.add(Person("Mia", 29))
+        personList.add(Person("Oriel", 23))
+    }
 
     private fun createRecyclerView() {
 
