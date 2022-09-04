@@ -11,13 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 class RecyclerAdapter(private val personList: ArrayList<Person>, var onItemClick : (Person) -> Unit)
     : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
-//    var onItemClick : ((Person) -> Unit)? = null
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView = itemView.findViewById(R.id.item_name)
         val imageView : ImageView = itemView.findViewById(R.id.item_image)
         val removeBtn : ImageButton = itemView.findViewById(R.id.remove_button)
-
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
