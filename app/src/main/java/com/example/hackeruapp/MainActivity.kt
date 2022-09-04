@@ -3,6 +3,7 @@ package com.example.hackeruapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
+import androidx.core.text.isDigitsOnly
 import androidx.recyclerview.widget.RecyclerView
 
 
@@ -10,14 +11,19 @@ class MainActivity : AppCompatActivity() {
 
     private var personList = arrayListOf<Person>()
     var adapter = RecyclerAdapter(personList) {it
-        Toast.makeText(this,"Hello ${it.name}",Toast.LENGTH_SHORT).show()
+        displayPersonFragment()
+//        Toast.makeText(this,"Hello ${it.name}",Toast.LENGTH_SHORT).show()
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setButtonClickListener()
+    }
+
+    private fun displayPersonFragment() {
+        val personFragment =  PersonFragment()
+        supportFragmentManager.beginTransaction().add(R.id.person_details_fragment, personFragment)
     }
 
     private fun setButtonClickListener() {
@@ -29,7 +35,7 @@ class MainActivity : AppCompatActivity() {
             val checkedId = radioGroup.checkedRadioButtonId
             adapter.notifyDataSetChanged()
 
-            if (input.text.isNullOrEmpty())
+            if (input.text.isDigitsOnly() || input.text.isNullOrEmpty())
                 Toast.makeText(this, "Please enter a valid Input", Toast.LENGTH_SHORT).show()
             else {
                 if (checkedId == -1)
@@ -59,7 +65,6 @@ class MainActivity : AppCompatActivity() {
         }
         createRecyclerView()
     }
-
 
     private fun createRecyclerView() {
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
