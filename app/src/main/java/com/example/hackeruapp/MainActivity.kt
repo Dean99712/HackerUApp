@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
 
-    var itemList = arrayListOf<Item>()
+    private var itemList = arrayListOf<Item>()
     var adapter = RecyclerAdapter(itemList)
 
 
@@ -33,6 +33,9 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please enter a valid Input", Toast.LENGTH_SHORT).show()
 
             else {
+                if (checkedId == -1)
+                    Toast.makeText(this,"Please select an image!", Toast.LENGTH_SHORT).show()
+
                 when(checkedId) {
                     R.id.radioButton1 -> itemList.add(Item(input.text.toString(),R.drawable.avatar1_foreground))
                     R.id.radioButton2 -> itemList.add(Item(input.text.toString(),R.drawable.avatar2_foreground))
