@@ -3,6 +3,7 @@ package com.example.hackeruapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
+import androidx.core.os.bundleOf
 import androidx.core.text.isDigitsOnly
 import androidx.recyclerview.widget.RecyclerView
 
@@ -10,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 class MainActivity : AppCompatActivity() {
 
     private var personList = arrayListOf<Person>()
-    var adapter = RecyclerAdapter(personList) {it
-        displayPersonFragment()
+    var adapter = RecyclerAdapter(personList) {
+        displayPersonFragment(it)
 //        Toast.makeText(this,"Hello ${it.name}",Toast.LENGTH_SHORT).show()
     }
 
@@ -21,9 +22,13 @@ class MainActivity : AppCompatActivity() {
         setButtonClickListener()
     }
 
-    private fun displayPersonFragment() {
+    private fun displayPersonFragment(person: Person) {
+        val bundle = bundleOf("name" to person.name)
         val personFragment =  PersonFragment()
-        supportFragmentManager.beginTransaction().add(R.id.person_details_fragment, personFragment)
+        personFragment.arguments = bundle
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.person_details_fragment, personFragment)
+            .commit()
     }
 
     private fun setButtonClickListener() {

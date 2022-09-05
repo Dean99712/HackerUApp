@@ -9,8 +9,9 @@ class PersonFragment : Fragment(R.layout.person_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val personTextView =  activity?.findViewById<TextView>(R.id.item_name)
-        personTextView?.text = "Ron"
+        val personTextView =  activity?.findViewById<TextView>(R.id.fragment_person_details)
+        val name = requireArguments().getString("name")
+        personTextView?.text = name.toString()
     }
 
 }

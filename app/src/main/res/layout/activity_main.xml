@@ -8,13 +8,13 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/person_details_fragment"
-        android:layout_width="234dp"
-        android:layout_height="203dp"
-        android:background="#000000"
+        android:layout_width="275dp"
+        android:layout_height="283dp"
         app:layout_constraintBottom_toBottomOf="@+id/recycler_view"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/recycler_view"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/recycler_view"
+        app:layout_constraintVertical_bias="1.0"
         tools:layout_constraintCircleRadius="50dp" />
 
     <androidx.recyclerview.widget.RecyclerView
