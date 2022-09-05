@@ -25,16 +25,11 @@
 
             <Button
                 android:id="@+id/button"
-                android:layout_width="48dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="317dp"
-                android:layout_marginLeft="317dp"
-                android:layout_marginRight="50dp"
-                android:text="X"
-                app:layout_constraintBottom_toTopOf="@+id/fragment_person_details"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_width="67dp"
+                android:layout_height="59dp"
+                android:layout_marginLeft="220dp"
+                android:onClick="removePersonFragment"
+                android:text="X" />
 
             <TextView
                 android:id="@+id/fragment_person_details"
