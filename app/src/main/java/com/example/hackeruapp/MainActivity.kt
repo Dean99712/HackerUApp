@@ -1,28 +1,27 @@
 package com.example.hackeruapp
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.*
 import androidx.core.os.bundleOf
 import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 
 
 class MainActivity : AppCompatActivity() {
 
     private var personList = arrayListOf<Person>()
-    var adapter = RecyclerAdapter(personList) {
+    private var adapter = RecyclerAdapter(personList) {
         displayPersonFragment(it)
-//        Toast.makeText(this,"Hello ${it.name}",Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setButtonClickListener()
+//        removePersonFragment()
     }
 
     private fun displayPersonFragment(person: Person) {
@@ -30,17 +29,20 @@ class MainActivity : AppCompatActivity() {
         val personFragment = PersonFragment()
         personFragment.arguments = bundle
         supportFragmentManager.beginTransaction()
-            .add(R.id.person_details_fragment, personFragment)
+            .replace(R.id.person_details_fragment, personFragment)
             .commit()
     }
 
-    fun removePersonFragment(view: View) {
-        val fragment: Fragment? =
-            supportFragmentManager.findFragmentById(R.id.person_details_fragment)
-
-        if (fragment != null)
-            supportFragmentManager.beginTransaction().remove(fragment).commit()
-    }
+//    private fun removePersonFragment() {
+//        val removeButton : Button = findViewById(R.id.button2)
+//        removeButton.setOnClickListener {
+//            val fragment: Fragment? = supportFragmentManager.findFragmentById(R.id.person_details_fragment)
+//
+//            if (fragment != null) {
+//                supportFragmentManager.beginTransaction().remove(fragment).commit()
+//            }
+//        }
+//    }
 
     private fun setButtonClickListener() {
         val button = findViewById<Button>(R.id.add_button)

@@ -1,5 +1,6 @@
 package com.example.hackeruapp
 
+import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,13 +34,21 @@ class RecyclerAdapter(private val personList: ArrayList<Person>, var onItemClick
         }
 
         holder.removeBtn.setOnClickListener{
-            personList.removeAt(holder.layoutPosition)
-            notifyItemRemoved(position)
+            val builder = AlertDialog.Builder(holder.itemView.context)
+            builder.setTitle("Delete item")
+            builder.setMessage("Are you sure you want to delete?")
+            builder.setPositiveButton("Confirm") {dialog, which ->
+                personList.removeAt(holder.layoutPosition)
+                notifyItemRemoved(position)
+            }
+            builder.setNegativeButton("Cancel") {dialog, which ->
+
+            }
+            builder.show()
         }
     }
 
     override fun getItemCount(): Int {
         return personList.size
     }
-
 }
