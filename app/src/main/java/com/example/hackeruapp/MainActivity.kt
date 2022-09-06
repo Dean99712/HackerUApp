@@ -1,27 +1,25 @@
 package com.example.hackeruapp
 
-import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
 import androidx.core.os.bundleOf
 import androidx.core.text.isDigitsOnly
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 
 
 class MainActivity : AppCompatActivity() {
 
     private var personList = arrayListOf<Person>()
-    private var adapter = RecyclerAdapter(personList) {
-        displayPersonFragment(it)
-    }
+    private var adapter = RecyclerAdapter(personList)
+//    {
+//        displayPersonFragment(it)
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setButtonClickListener()
-//        removePersonFragment()
     }
 
     private fun displayPersonFragment(person: Person) {
@@ -33,17 +31,6 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
-//    private fun removePersonFragment() {
-//        val removeButton : Button = findViewById(R.id.button2)
-//        removeButton.setOnClickListener {
-//            val fragment: Fragment? = supportFragmentManager.findFragmentById(R.id.person_details_fragment)
-//
-//            if (fragment != null) {
-//                supportFragmentManager.beginTransaction().remove(fragment).commit()
-//            }
-//        }
-//    }
-
     private fun setButtonClickListener() {
         val button = findViewById<Button>(R.id.add_button)
         val input = findViewById<EditText>(R.id.item_name_input)
@@ -53,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             val checkedId = radioGroup.checkedRadioButtonId
             adapter.notifyDataSetChanged()
 
-            if (input.text.isDigitsOnly() || input.text.isNullOrEmpty())
+            if (input.text.contains("[0-9]+?-?|/D[a-zA-Z]{3,}$[0-9]".toRegex()) || input.text.isNullOrEmpty())
                 Toast.makeText(this, "Please enter a valid Input", Toast.LENGTH_SHORT).show()
             else {
                 if (checkedId == -1)
