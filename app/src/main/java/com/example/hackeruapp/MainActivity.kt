@@ -1,10 +1,13 @@
 package com.example.hackeruapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.concurrent.thread
@@ -40,6 +43,7 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
+
     private fun setButtonClickListener() {
         val button = findViewById<Button>(R.id.button)
         button.setOnClickListener {
@@ -52,15 +56,30 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun onNoteTitleClick(): (note: Note) -> Unit {
+        displayPersonDetailsFragment(it)
+    }
+
+    val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        result ->
+        Log.d("Test", "got content: ${result}")
+        val url = result.data?.data
+    }
+
+    private fun onNoteImageClick(): (note: Note) -> Unit = { note ->
+        println("Click on ${note.title}")
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = "image/*"
+    }
 
     private fun createRecyclerView() {
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
-        val adapter = MyAdapter(noteList) {
-            displayPersonDetailsFragment(it)
-        }
+        val adapter = MyAdapter(arrayListOf(), onNoteTitleClick(), onNoteImageClick())
         recyclerView.adapter = adapter
-        repository.getAllNotes().observe(this) {
-            adapter.updateAdapterView(it)
+        val notesListLiveData = repository.getAllNotes()
+        notesListLiveData.observe(this) { noteList ->
+            adapter.heyAdapterPleaseUpdateTheView(noteList)
         }
     }
 }
