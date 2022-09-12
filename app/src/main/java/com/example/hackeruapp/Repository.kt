@@ -1,15 +1,21 @@
 package com.example.hackeruapp
 
+
+import android.app.Application
 import androidx.lifecycle.LiveData
-import androidx.room.Delete
 
-class Repository(private val notesDao: NotesDao) {
+class Repository(application: Application) {
+    private val dao = NotesDatabase.getDatabase(application).getNotesDao()
 
-    fun getAllNotes(): LiveData<List<Note>> {
-        return notesDao.getAllNotes()
+    fun getAllNotesAsLiveData(): LiveData<List<Note>> {
+        return dao.getAllNotes()
     }
 
     fun addNote(note: Note) {
-        notesDao.insertNote(note)
+        dao.insertNote(note)
+    }
+
+    fun updateNoteImage(note: Note, uri: String, imageType: IMAGE_TYPE) {
+        dao.updateNoteImageUri(note, uri, imageType)
     }
 }
