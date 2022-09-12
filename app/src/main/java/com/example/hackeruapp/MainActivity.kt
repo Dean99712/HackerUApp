@@ -16,7 +16,6 @@ import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var repository: Repository
     private var chosenNote: Note? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +25,6 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         setButtonClickListener()
-        repository = Repository(application)
         createRecyclerView()
     }
 
@@ -39,15 +37,19 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
+    private fun createNewNote() {
+        val noteTitle = findViewById<EditText>(R.id.note_title_et).text.toString()
+        val noteDesc = findViewById<EditText>(R.id.note_desc_et).text.toString()
+        val note = Note(noteTitle, noteDesc)
+        thread(start = true) {
+            Repository.getInstance(this).addNote(note)
+        }
+    }
+
     private fun setButtonClickListener() {
         val button = findViewById<Button>(R.id.button)
         button.setOnClickListener {
-            val noteTitle = findViewById<EditText>(R.id.note_title_et).text.toString()
-            val noteDesc = findViewById<EditText>(R.id.note_desc_et).text.toString()
-            val note = Note(noteTitle, noteDesc)
-            thread(start = true) {
-                repository.addNote(note)
-            }
+            createNewNote()
         }
     }
 
@@ -57,22 +59,12 @@ class MainActivity : AppCompatActivity() {
 
     val getContent =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            Log.d("Test", "got content: $result")
-            if (result.resultCode == RESULT_OK) {
-                val uri = result.data?.data
-                if (uri != null) {
-                    contentResolver.takePersistableUriPermission(
-                        uri,
-                        Intent.FLAG_GRANT_READ_URI_PERMISSION
-                    )
-                    addImageToNote(uri.toString(), IMAGE_TYPE.URI)
-                }
-            }
+//            ImagesManager.getImageFromGallery()
         }
 
     private fun addImageToNote(imagePath: String, imageType: IMAGE_TYPE) {
         thread(start = true) {
-            repository.updateNoteImage(chosenNote!!, imagePath, imageType)
+            Repository.getInstance(this).updateNoteImage(chosenNote!!, imagePath, imageType)
         }
     }
 
@@ -86,7 +78,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onNoteImageClick(): (note: Note) -> Unit = { note ->
-//        getImageFromGallery(note)
+        chosenNote = note
+        ImagesManager.displayImagesAlertDialog(this, note, getContent)
         getImageFromApi(note)
     }
 
@@ -110,7 +103,7 @@ class MainActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
         val adapter = MyAdapter(arrayListOf(), onNoteTitleClick(), onNoteImageClick(), this)
         recyclerView.adapter = adapter
-        val notesListLiveData = repository.getAllNotesAsLiveData()
+        val notesListLiveData = Repository.getInstance(this).getAllNotesAsLiveData()
         notesListLiveData.observe(this) { notesList ->
             adapter.heyAdapterPleaseUpdateTheView(notesList)
         }
