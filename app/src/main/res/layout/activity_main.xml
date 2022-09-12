@@ -17,16 +17,17 @@
             android:id="@+id/fragment_container_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_margin="100dp"
-            />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/title_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hi I'm Title"
+            android:text="@string/hi_i_m_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -36,21 +37,53 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_margin="20dp"
+            android:layout_marginStart="20dp"
             app:layoutManager="LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@id/button"
-            app:layout_constraintTop_toBottomOf="@id/title_text_view"
-            />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello Yakov"
-            android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/add"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/note_desc_et"
+        app:layout_constraintVertical_bias="0.258" />
+
+    <EditText
+        android:id="@+id/note_title_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:hint="@string/write_note_here"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/note_desc_et"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/screen"
+        app:layout_constraintVertical_bias="0.797" />
+
+    <EditText
+        android:id="@+id/note_desc_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/write_description_here"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/screen" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

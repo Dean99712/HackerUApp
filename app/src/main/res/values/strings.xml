@@ -6,4 +6,9 @@
     <string name="button">Button</string>
     <string name="this_is_a_demo">This is a demo</string>
     <string name="todo">TODO</string>
+    <string name="write_description_here">write description here</string>
+    <string name="write_note_here">write note here</string>
+    <string name="hello_yakov">Hello Yakov</string>
+    <string name="hi_i_m_title">Hi I\'m Title</string>
+    <string name="add">add</string>
 </resources>

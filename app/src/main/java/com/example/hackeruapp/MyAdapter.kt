@@ -1,12 +1,13 @@
 package com.example.hackeruapp
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class MyAdapter(private val dataList: List<Person>, val onPersonClick: (Person)-> Unit) : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
+class MyAdapter(private val dataList: ArrayList<Note>, val onPersonClick: (Note)-> Unit) : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView
@@ -23,7 +24,7 @@ class MyAdapter(private val dataList: List<Person>, val onPersonClick: (Person)-
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.textView.text = dataList[position].name
+        holder.textView.text = dataList[position].title
         holder.textView.setOnClickListener {
             onPersonClick(dataList[position])
         }
@@ -31,5 +32,13 @@ class MyAdapter(private val dataList: List<Person>, val onPersonClick: (Person)-
 
     override fun getItemCount(): Int {
         return dataList.size
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun heyAdapterPleaseUpdateTheView(notesList: List<Note>) {
+
+        dataList.clear()
+        dataList.addAll(notesList)
+        notifyDataSetChanged()
     }
 }
