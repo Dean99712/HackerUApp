@@ -3,7 +3,7 @@ package com.example.hackeruapp
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 
-class PersonFragment : Fragment(R.layout.person_fragment) {
+class NoteItemFragment : Fragment(R.layout.person_fragment) {
     override fun onResume() {
         super.onResume()
         val activity = requireActivity()

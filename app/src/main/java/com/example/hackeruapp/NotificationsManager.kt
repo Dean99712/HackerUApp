@@ -1,8 +1,11 @@
 package com.example.hackeruapp
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 
@@ -22,14 +25,29 @@ object NotificationsManager {
         notificationManager.createNotificationChannel(channel)
     }
 
-    fun diaplay(context: Context, note: Note) {
+    fun diaplayNewNoteNotification(context: Context, note: Note) {
         createNotificationChannel(context)
-        val builer =
+        val builder =
             NotificationCompat.Builder(context, CHANNEL_ID)
                 .setContentTitle("MyNotification")
                 .setSmallIcon(R.drawable.camera)
                 .setContentText("Hey! Note -${note.title} has been added to your list")
         val notificationManagerCompat = NotificationManagerCompat.from(context)
-        notificationManagerCompat.notify(1, builer.build())
+        notificationManagerCompat.notify(1, builder.build())
+    }
+
+    fun getServiceNotification(context: Context): Notification {
+        createNotificationChannel(context)
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            0,
+            Intent(context, RegistrationActivity::class.java),
+            0
+        )
+       return NotificationCompat.Builder(context, CHANNEL_ID)
+            .setContentTitle("My Service Notification")
+            .setSmallIcon(R.drawable.camera)
+           .setContentIntent(pendingIntent)
+            .setContentText("Now the user can see that im working in background").build()
     }
 }

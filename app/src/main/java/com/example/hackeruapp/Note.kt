@@ -13,6 +13,7 @@ data class Note(
     @ColumnInfo(name = "description") val description: String,
     @ColumnInfo(name = "image_path") var imagePath: String? = null,
     @ColumnInfo(name = "image_type") var imageType: IMAGE_TYPE? = null,
+    @ColumnInfo(name = "timestamp") var timestamp: Long = System.currentTimeMillis()
 ){
     @PrimaryKey(autoGenerate = true)
     var id = 0

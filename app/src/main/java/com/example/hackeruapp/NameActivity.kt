@@ -14,7 +14,7 @@ class NameActivity : AppCompatActivity() {
     }
 
     fun onStartClick(view:View) {
-        val intent = Intent(this,MainActivity::class.java)
+        val intent = Intent(this,NotesActivity::class.java)
         val name = findViewById<EditText>(R.id.name_et).text.toString()
         intent.putExtra("extra",name)
         startActivity(intent)

@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
@@ -14,12 +15,14 @@ import retrofit2.Response
 import kotlin.concurrent.thread
 
 
-class MainActivity : AppCompatActivity() {
+class NotesActivity : AppCompatActivity() {
 
     private var chosenNote: Note? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val serviceIntent = Intent(this, NotesService::class.java)
+        ContextCompat.startForegroundService(this,serviceIntent)
     }
 
     override fun onStart() {
@@ -29,11 +32,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun displayPersonDetailsFragment(note: Note) {
-        val personFragment = PersonFragment()
+        val noteItemFragment = NoteItemFragment()
         val bundle = bundleOf("thePersonAge" to note.description, "thePersonName" to note.title)
-        personFragment.arguments = bundle
+        noteItemFragment.arguments = bundle
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container_view, personFragment)
+            .replace(R.id.fragment_container_view, noteItemFragment)
             .commit()
     }
 
