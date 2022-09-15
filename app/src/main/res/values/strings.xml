@@ -11,4 +11,6 @@
     <string name="hello_yakov">Hello Yakov</string>
     <string name="hi_i_m_title">Hi I\'m Title</string>
     <string name="add">add</string>
+    <string name="what_is_your_name">what is your name</string>
+    <string name="start">start</string>
 </resources>

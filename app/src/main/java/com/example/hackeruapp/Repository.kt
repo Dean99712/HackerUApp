@@ -1,6 +1,7 @@
 package com.example.hackeruapp
 
 import android.app.Application
+import android.net.Uri
 import androidx.lifecycle.LiveData
 
 class Repository(application: Application) {
@@ -12,5 +13,13 @@ class Repository(application: Application) {
 
     fun addNote(note: Note) {
         dao.insetNote(note)
+    }
+
+    fun deleteNote(note: Note) {
+        dao.delete(note)
+    }
+
+    fun updateNoteImage(note: Note, uri: Uri) {
+        dao.updateNoteImageUri(note, uri)
     }
 }

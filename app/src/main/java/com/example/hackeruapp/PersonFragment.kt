@@ -7,11 +7,11 @@ class PersonFragment : Fragment(R.layout.person_fragment) {
     override fun onResume() {
         super.onResume()
         val activity = requireActivity()
-        val personNameTextView = activity.findViewById<TextView>(R.id.person_title)
-        val personAgeTextView = activity.findViewById<TextView>(R.id.person_age)
-        val age = requireArguments().getInt("thePersonAge")
-        val name = requireArguments().getString("thePersonName")
-        personNameTextView.text = name
-        personAgeTextView.text = "Age is: $age"
+        val titleTextView = activity.findViewById<TextView>(R.id.note_title)
+        val descTextView = activity.findViewById<TextView>(R.id.note_desc)
+        val title = requireArguments().getString("noteTitle")
+        val desc = requireArguments().getString("noteDesc")
+        titleTextView.text = title
+        descTextView.text = "Description: $desc"
     }
 }
