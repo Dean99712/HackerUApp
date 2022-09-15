@@ -18,6 +18,7 @@ class MyAdapter(
 ) : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
         val textView: TextView
         val imageView: ImageView
 

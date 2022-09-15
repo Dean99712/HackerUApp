@@ -108,5 +108,4 @@ class MainActivity : AppCompatActivity() {
             adapter.heyAdapterPleaseUpdateTheView(notesList)
         }
     }
-
 }
