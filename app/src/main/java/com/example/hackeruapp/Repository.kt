@@ -1,7 +1,6 @@
 package com.example.hackeruapp
 
 import android.app.Application
-import android.net.Uri
 import androidx.lifecycle.LiveData
 
 class Repository(application: Application) {
@@ -19,7 +18,7 @@ class Repository(application: Application) {
         dao.delete(note)
     }
 
-    fun updateNoteImage(note: Note, uri: Uri) {
-        dao.updateNoteImageUri(note, uri)
+    fun updateNoteImage(note: Note, uri: String, imageType: IMAGE_TYPE) {
+        dao.updateNoteImageUri(note, uri, imageType)
     }
 }

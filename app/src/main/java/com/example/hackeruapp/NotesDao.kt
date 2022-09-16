@@ -1,6 +1,5 @@
 package com.example.hackeruapp
 
-import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.room.*
 
@@ -19,8 +18,9 @@ interface NotesDao {
     @Update
     fun updateNote(note: Note)
 
-    fun updateNoteImageUri(note: Note, uri: Uri) {
-        note.imageUri = uri.toString()
+    fun updateNoteImageUri(note: Note, uri: String, imageType: IMAGE_TYPE) {
+        note.imagePath = uri
+        note.imageType = imageType
         updateNote(note)
     }
 }

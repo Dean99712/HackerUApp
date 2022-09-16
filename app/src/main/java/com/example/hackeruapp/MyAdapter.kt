@@ -1,6 +1,7 @@
 package com.example.hackeruapp
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -8,16 +9,19 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
 class MyAdapter(
     private val dataList: ArrayList<Note>,
     val onNoteTitleClick: (Note) -> Unit,
-    val onNoteImageClick: (Note) -> Unit
+    val onNoteImageClick: (Note) -> Unit,
+    val context: Context
 ) : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView
         val imageView: ImageView
+
 
         init {
             textView = view.findViewById(R.id.text_view)
@@ -34,8 +38,13 @@ class MyAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val note = dataList[position]
         holder.textView.text = note.title
-        if (note.imageUri != null) {
-            holder.imageView.setImageURI(Uri.parse(note.imageUri))
+        if (note.imageType != null) {
+            if (note.imageType == IMAGE_TYPE.URI) {
+                holder.imageView.setImageURI(Uri.parse(note.imagePath))
+            } else {
+//                holder.imageView.setImageUrl()
+                Glide.with(context).load(note.imagePath).into(holder.imageView)
+            }
         }
         holder.textView.setOnClickListener {
             onNoteTitleClick(note)
