@@ -6,18 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import de.hdodenhof.circleimageview.CircleImageView
 
 class RecyclerAdapter(
-    private val personList: ArrayList<Person>,
-//    var onItemClick: (Person) -> Unit
+    private val dataList: ArrayList<Person>
 ) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val personCard: LinearLayout = itemView.findViewById(R.id.person_card_recycler)
         val textView: TextView = itemView.findViewById(R.id.item_name)
         val imageView: ImageView = itemView.findViewById(R.id.item_image)
         val removeBtn: ImageButton = itemView.findViewById(R.id.remove_button)
@@ -29,21 +25,19 @@ class RecyclerAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = personList[position]
+        val person = dataList[position]
 
-        holder.textView.text = item.name
-        holder.imageView.setImageResource(item.image)
+        holder.textView.text = person.name
+        holder.imageView.setImageResource(person.image)
 
-        holder.personCard.setOnClickListener {
+        holder.imageView.setOnClickListener {
             val dialog: AlertDialog.Builder = AlertDialog.Builder(it.rootView.context)
             val dialogView : View = LayoutInflater.from(it.rootView.context).inflate(R.layout.person_fragment, null)
 
             val dialogProfileImage: ImageView = dialogView.findViewById(R.id.fragment_person_image)
             val dialogProfileTitle: TextView = dialogView.findViewById(R.id.fragment_person_details)
-            dialogProfileTitle.text = item.name
-            dialogProfileImage.setImageResource(item.image)
-
-
+            dialogProfileTitle.text = person.name
+            dialogProfileImage.setImageResource(person.image)
             dialog.setView(dialogView)
             dialog.setCancelable(true)
             dialog.show()
@@ -55,7 +49,7 @@ class RecyclerAdapter(
             builder.setTitle("Delete item")
             builder.setMessage("Are you sure you want to delete?")
             builder.setPositiveButton("Confirm") { dialog, which ->
-                personList.removeAt(holder.layoutPosition)
+                dataList.removeAt(holder.layoutPosition)
                 notifyItemRemoved(position)
             }
             builder.setNegativeButton("Cancel") { dialog, which ->
@@ -65,6 +59,12 @@ class RecyclerAdapter(
     }
 
     override fun getItemCount(): Int {
-        return personList.size
+        return dataList.size
+    }
+
+    fun viewUpdater(personList: List<Person> ) {
+        dataList.clear()
+        dataList.addAll(personList)
+        notifyDataSetChanged()
     }
 }
