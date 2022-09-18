@@ -1,10 +1,10 @@
 package com.example.hackeruapp
 
-import android.app.Application
+import android.content.Context
 import androidx.lifecycle.LiveData
 
-class Repository(application: Application) {
-    private val dao = PersonDatabase.getDatabase(application).getNotesDao()
+class Repository(context: Context) {
+    private val dao = PersonDatabase.getDatabase(context).getNotesDao()
 
     fun getAllPeopleAsLiveData(): LiveData<List<Person>> {
         return dao.getAllPeople()
@@ -12,5 +12,9 @@ class Repository(application: Application) {
 
     fun addPerson(person: Person) {
         dao.insertPerson(person)
+    }
+
+    fun deletePerson(person: Person) {
+        dao.deletePerson(person)
     }
 }
