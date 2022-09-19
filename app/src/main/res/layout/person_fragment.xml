@@ -16,7 +16,6 @@
             android:layout_height="wrap_content"
             android:padding="20dp"
             android:src="@drawable/ic_person"
-            android:background="@color/design_default_color_secondary"
             />
 
         <TextView

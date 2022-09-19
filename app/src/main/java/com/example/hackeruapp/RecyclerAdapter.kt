@@ -1,15 +1,15 @@
 package com.example.hackeruapp
 
-import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
-import kotlin.concurrent.thread
 
 class RecyclerAdapter(
-    private val dataList: ArrayList<Person>
+    private val dataList: ArrayList<Person>,
+    private val onPersonTitleClick: (Person) -> Unit,
+    private val onRemoveButtonClick: (Person) -> Unit
 ) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -31,57 +31,19 @@ class RecyclerAdapter(
         holder.imageView.setImageResource(person.image)
 
         holder.imageView.setOnClickListener {
-
         }
 
-        holder.textView.setOnClickListener{
-                val dialog: AlertDialog.Builder = AlertDialog.Builder(it.rootView.context)
-                val dialogView: View =
-                    LayoutInflater.from(it.rootView.context).inflate(R.layout.person_fragment, null)
-
-                val dialogProfileImage: ImageView = dialogView.findViewById(R.id.fragment_person_image)
-                val dialogProfileTitle: TextView = dialogView.findViewById(R.id.fragment_person_details)
-                dialogProfileTitle.text = person.name
-                dialogProfileImage.setImageResource(person.image)
-                dialog.setView(dialogView)
-                dialog.setCancelable(true)
-                dialog.show()
-            }
+        holder.textView.setOnClickListener {
+            onPersonTitleClick(person)
+        }
 
         holder.personCard.setOnClickListener {
-
-            val dialog: AlertDialog.Builder = AlertDialog.Builder(it.rootView.context)
-            val dialogView: View =
-                LayoutInflater.from(it.rootView.context).inflate(R.layout.fragment_update, null)
-
-            dialog.setView(dialogView)
-            dialog.setPositiveButton("Update") {dialog, which ->
-                val dialogPersonName = dialogView.findViewById<EditText?>(R.id.et_person_update_name).text.toString()
-
-                thread(start = true) {
-                    Repository.getInstance(it.context).updatePerson(person.id, dialogPersonName)
-                }
-                notifyDataSetChanged()
-            }
-            dialog.setCancelable(true)
-            dialog.show()
+            onPersonTitleClick(person)
         }
 
 
         holder.removeBtn.setOnClickListener {
-            val builder = AlertDialog.Builder(holder.itemView.context)
-            builder.setTitle("Delete item")
-            builder.setMessage("Are you sure you want to delete?")
-            builder.setPositiveButton("Confirm") { dialog, which ->
-                dataList.removeAt(holder.layoutPosition)
-                thread(start = true) {
-                    Repository.getInstance(it.context).deletePerson(person)
-                }
-                notifyItemRemoved(position)
-            }
-            builder.setNegativeButton("Cancel") { dialog, which ->
-            }
-            builder.show()
+            onRemoveButtonClick(person)
         }
     }
 
