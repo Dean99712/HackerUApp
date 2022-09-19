@@ -1,16 +1,17 @@
 package com.example.hackeruapp
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
+import java.util.concurrent.Flow
 
 @Dao
 interface PeopleDao {
 
     @Insert
     fun insertPerson(person: Person)
+
+    @Query("UPDATE peopleTable SET person_name =:person WHERE id = :id")
+    fun updatePerson(id: Int, person: String)
 
     @Delete
     fun deletePerson(person: Person)

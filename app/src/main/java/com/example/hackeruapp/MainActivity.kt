@@ -9,13 +9,11 @@ import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var repository: Repository
     private var adapter = RecyclerAdapter(arrayListOf())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        repository = Repository(this)
         setButtonClickListener()
     }
 
@@ -23,30 +21,17 @@ class MainActivity : AppCompatActivity() {
         val button = findViewById<Button>(R.id.add_button)
         val input = findViewById<EditText>(R.id.item_name_input)
         button.setOnClickListener {
-            val radioGroup = findViewById<RadioGroup>(R.id.radioItemSelect)
-            val checkedId = radioGroup.checkedRadioButtonId
             adapter.notifyDataSetChanged()
 
-            if (!isInputValid())
-                Toast.makeText(this, "Please enter a valid Input", Toast.LENGTH_SHORT).show()
-            else {
-                if (checkedId == -1)
-                    Toast.makeText(this, "Please select an image!", Toast.LENGTH_SHORT).show()
+            if (!isInputValid()) {
 
-                when (checkedId) {
-                    R.id.radioButton1 ->
-                        thread(start = true) {
-                            repository.addPerson(Person(input.text.toString(), R.drawable.avatar1_foreground))
-                        }
-                    R.id.radioButton2 ->
-                        thread(start = true) {
-                            repository.addPerson(Person(input.text.toString(), R.drawable.avatar2_foreground))
-                        }
-                    R.id.radioButton3 ->
-                        thread(start = true) {
-                            repository.addPerson(Person(input.text.toString(), R.drawable.avatar3_foreground))
-                        }
+                Toast.makeText(this, "Please enter a valid Input", Toast.LENGTH_SHORT).show()
+            } else {
+
+                thread(start = true) {
+                    Repository.getInstance(this).addPerson(Person(input.text.toString(), R.drawable.ic_person))
                 }
+                Toast.makeText(this, "Successfully Added!", Toast.LENGTH_SHORT).show()
             }
         }
         createRecyclerView()
@@ -63,11 +48,12 @@ class MainActivity : AppCompatActivity() {
     private fun createRecyclerView() {
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
         recyclerView.adapter = adapter
-        val peopleListLiveData = repository.getAllPeopleAsLiveData()
+        val peopleListLiveData =  Repository.getInstance(this).getAllPeopleAsLiveData()
         peopleListLiveData.observe(this) { personList ->
             adapter.viewUpdater(personList)
         }
     }
+
 }
 
 

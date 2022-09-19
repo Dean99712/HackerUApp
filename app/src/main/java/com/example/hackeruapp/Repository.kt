@@ -3,8 +3,19 @@ package com.example.hackeruapp
 import android.content.Context
 import androidx.lifecycle.LiveData
 
-class Repository(context: Context) {
+class Repository private constructor(context: Context) {
     private val dao = PersonDatabase.getDatabase(context).getNotesDao()
+
+    companion object{
+        private lateinit var instance: Repository
+
+        fun getInstance(context: Context) : Repository {
+            if (!::instance.isInitialized){
+                instance = Repository(context)
+            }
+            return instance
+        }
+    }
 
     fun getAllPeopleAsLiveData(): LiveData<List<Person>> {
         return dao.getAllPeople()
@@ -16,5 +27,9 @@ class Repository(context: Context) {
 
     fun deletePerson(person: Person) {
         dao.deletePerson(person)
+    }
+
+    fun updatePerson(id : Int , person: String){
+        return dao.updatePerson(id , person)
     }
 }

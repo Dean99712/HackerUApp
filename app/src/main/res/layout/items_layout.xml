@@ -24,13 +24,17 @@
             android:layout_width="9dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/avatar1_foreground" />
+            android:src="@drawable/ic_person"
+            android:background="@color/design_default_color_secondary"
+            />
+
 
         <TextView
             android:id="@+id/item_name"
             android:layout_width="211dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="25dp"
             android:layout_weight="1"
             android:gravity="center|fill_horizontal"
             android:text="TextView"
