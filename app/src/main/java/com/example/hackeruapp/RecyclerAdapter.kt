@@ -49,28 +49,24 @@ class RecyclerAdapter(
             }
 
         holder.personCard.setOnClickListener {
-            val input = holder.itemView.findViewById<EditText?>(R.id.et_person_update_name)
 
             val dialog: AlertDialog.Builder = AlertDialog.Builder(it.rootView.context)
             val dialogView: View =
                 LayoutInflater.from(it.rootView.context).inflate(R.layout.fragment_update, null)
 
-            val dialogPersonName = dialogView.findViewById<EditText?>(R.id.et_person_update_name)
-            val nameOutput =  input.text.toString()
             dialog.setView(dialogView)
             dialog.setPositiveButton("Update") {dialog, which ->
+                val dialogPersonName = dialogView.findViewById<EditText?>(R.id.et_person_update_name).text.toString()
 
                 thread(start = true) {
-                    Repository.getInstance(it.context).updatePerson(person.id, nameOutput)
+                    Repository.getInstance(it.context).updatePerson(person.id, dialogPersonName)
                 }
                 notifyDataSetChanged()
             }
             dialog.setCancelable(true)
             dialog.show()
-
-
-
         }
+
 
         holder.removeBtn.setOnClickListener {
             val builder = AlertDialog.Builder(holder.itemView.context)

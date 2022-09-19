@@ -43,7 +43,7 @@
         <ImageButton
             android:id="@+id/remove_button"
             android:layout_width="1dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#FFFFFF"
             android:src="@drawable/delete_outline_foreground"
