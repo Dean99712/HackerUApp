@@ -44,10 +44,9 @@
             android:id="@+id/remove_button"
             android:layout_width="1dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:src="@drawable/ic_edit"
+            android:src="@drawable/delete_outline_foreground"
             tools:ignore="SpeakableTextPresentCheck" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

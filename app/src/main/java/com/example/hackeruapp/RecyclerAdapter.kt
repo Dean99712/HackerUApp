@@ -1,12 +1,10 @@
 package com.example.hackeruapp
 
-import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
-import kotlin.concurrent.thread
 
 class RecyclerAdapter(
     private val dataList: ArrayList<Person>,
@@ -35,23 +33,17 @@ class RecyclerAdapter(
         holder.imageView.setOnClickListener {
         }
 
-        holder.personCard.setOnClickListener {
-            val dialog: AlertDialog.Builder = AlertDialog.Builder(it.rootView.context)
-            val dialogView: View =
-                LayoutInflater.from(it.rootView.context).inflate(R.layout.person_fragment, null)
+        holder.textView.setOnClickListener {
+            onPersonTitleClick(person)
+        }
 
-            val dialogProfileImage: ImageView = dialogView.findViewById(R.id.fragment_person_image)
-            val dialogProfileTitle: TextView = dialogView.findViewById(R.id.fragment_person_details)
-            dialogProfileTitle.text = person.name
-            dialogProfileImage.setImageResource(person.image)
-            dialog.setView(dialogView)
-            dialog.setCancelable(true)
-            dialog.show()
+        holder.personCard.setOnClickListener {
+            onPersonTitleClick(person)
         }
 
 
         holder.removeBtn.setOnClickListener {
-            onPersonTitleClick(person)
+            onRemoveButtonClick(person)
         }
     }
 
