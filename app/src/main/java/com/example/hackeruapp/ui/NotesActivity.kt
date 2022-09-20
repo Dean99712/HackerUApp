@@ -1,14 +1,24 @@
-package com.example.hackeruapp
+package com.example.hackeruapp.ui
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hackeruapp.*
+import com.example.hackeruapp.model.IMAGE_TYPE
+import com.example.hackeruapp.model.Note
+import com.example.hackeruapp.model.Repository
+import com.example.hackeruapp.viewmodel.NotesViewModel
+import com.example.hackeruapp.viewmodel.RegistrationViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -17,12 +27,16 @@ import kotlin.concurrent.thread
 
 class NotesActivity : AppCompatActivity() {
 
+    private val notesViewModel: NotesViewModel by viewModels()
+
+
     private var chosenNote: Note? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val serviceIntent = Intent(this, NotesService::class.java)
-        ContextCompat.startForegroundService(this,serviceIntent)
+        ContextCompat.startForegroundService(this, serviceIntent)
+        updateTitleDynamically()
     }
 
     override fun onStart() {
@@ -45,7 +59,7 @@ class NotesActivity : AppCompatActivity() {
         val noteDesc = findViewById<EditText>(R.id.note_desc_et).text.toString()
         val note = Note(noteTitle, noteDesc)
         thread(start = true) {
-            Repository.getInstance(this).addNote(note)
+            notesViewModel.addNote(note)
         }
     }
 
@@ -86,7 +100,7 @@ class NotesActivity : AppCompatActivity() {
         getImageFromApi(note)
     }
 
-    private fun getImageFromApi(note:Note) {
+    private fun getImageFromApi(note: Note) {
         chosenNote = note
         val retrofit = ApiInterface.create()
         retrofit.getImages(note.title).enqueue(object : Callback<ApiResponse> {
@@ -106,9 +120,18 @@ class NotesActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
         val adapter = MyAdapter(arrayListOf(), onNoteTitleClick(), onNoteImageClick(), this)
         recyclerView.adapter = adapter
-        val notesListLiveData = Repository.getInstance(this).getAllNotesAsLiveData()
-        notesListLiveData.observe(this) { notesList ->
+        notesViewModel.notesListLiveData.observe(this) { notesList ->
             adapter.heyAdapterPleaseUpdateTheView(notesList)
         }
+    }
+
+    private fun updateTitleDynamically() {
+        note_title_et.addTextChangedListener {
+            notesViewModel.currentTitleLiveData.value = note_title_et.text.toString()
+        }
+        notesViewModel.currentTitleLiveData.observe(this) {
+            title_text_view.text = "Youre going to add: $it"
+        }
+
     }
 }

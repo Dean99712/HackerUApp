@@ -1,4 +1,4 @@
-package com.example.hackeruapp
+package com.example.hackeruapp.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

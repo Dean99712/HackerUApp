@@ -3,12 +3,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignUpFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.SignUpFragment">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Sign Up Fragment"
+
+        android:text="Sign-Up Fragment"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:gravity="center_horizontal"
         tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/email_login_tv"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:hint="email"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/password_signup_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.919" />
+
+    <EditText
+        android:id="@+id/password_signup_tv"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="260dp"
+        android:hint="password"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

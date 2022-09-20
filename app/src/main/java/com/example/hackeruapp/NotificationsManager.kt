@@ -8,6 +8,8 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.example.hackeruapp.model.Note
+import com.example.hackeruapp.ui.RegistrationActivity
 
 object NotificationsManager {
 

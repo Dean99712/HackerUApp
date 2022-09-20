@@ -1,7 +1,8 @@
-package com.example.hackeruapp
+package com.example.hackeruapp.ui
 
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.example.hackeruapp.R
 
 class NoteItemFragment : Fragment(R.layout.person_fragment) {
     override fun onResume() {

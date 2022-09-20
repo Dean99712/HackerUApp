@@ -1,4 +1,4 @@
-package com.example.hackeruapp
+package com.example.hackeruapp.ui
 
 import android.content.Intent
 import android.content.SharedPreferences
@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import com.example.hackeruapp.R
 
 class RegistrationActivity : AppCompatActivity() {
     var isLoginFragment = true

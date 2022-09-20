@@ -8,6 +8,9 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.hackeruapp.model.IMAGE_TYPE
+import com.example.hackeruapp.model.Note
+import com.example.hackeruapp.model.Repository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,7 +27,7 @@ object ImagesManager{
     }
 
 
-    fun onImageResultFromGallery(context: Context,note: Note,result: ActivityResult) {
+    fun onImageResultFromGallery(context: Context, note: Note, result: ActivityResult) {
         Log.d("Test", "got content: $result")
         if (result.resultCode == AppCompatActivity.RESULT_OK) {
             val uri = result.data?.data
@@ -38,13 +41,13 @@ object ImagesManager{
         }
     }
 
-    private fun addImageToNote(note: Note,imagePath: String, imageType: IMAGE_TYPE, context: Context) {
+    private fun addImageToNote(note: Note, imagePath: String, imageType: IMAGE_TYPE, context: Context) {
         thread(start = true) {
             Repository.getInstance(context).updateNoteImage(note, imagePath, imageType)
         }
     }
 
-     fun getImageFromApi(note:Note, context: Context) {
+     fun getImageFromApi(note: Note, context: Context) {
 //        chosenNote = note
         val retrofit = ApiInterface.create()
         retrofit.getImages(note.title).enqueue(object : Callback<ApiResponse> {

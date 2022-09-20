@@ -1,4 +1,4 @@
-package com.example.hackeruapp
+package com.example.hackeruapp.model
 
 import android.content.Context
 import androidx.room.*
