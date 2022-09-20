@@ -13,13 +13,12 @@ class RegistrationActivity : AppCompatActivity() {
     var isLoginFragment = true
     val userName = "a@a.com"
     val password = "1234"
-    lateinit var sharedPreferences:SharedPreferences
-
+    lateinit var sharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
         displayLoginFragment()
-        setTextViewClickListiner()
+        setTextViewClickListener()
     }
 
     override fun onStart() {
@@ -36,7 +35,7 @@ class RegistrationActivity : AppCompatActivity() {
         }
     }
 
-    private fun setTextViewClickListiner() {
+    private fun setTextViewClickListener() {
         findViewById<TextView>(R.id.login_signup_tv).setOnClickListener {
             if (isLoginFragment) {
                 displaySignUpFragment()
@@ -49,21 +48,21 @@ class RegistrationActivity : AppCompatActivity() {
     fun displaySignUpFragment() {
         isLoginFragment = false
         findViewById<TextView>(R.id.login_signup_tv).text = "Already a member? Click here to Login"
-        val signupFragment = SignUpFragment()
+        val loginFragment = SignUpFragment()
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container_view, signupFragment)
+            .replace(R.id.registration_fragment_container_view, loginFragment)
             .commit()
     }
+
 
     fun displayLoginFragment() {
         isLoginFragment = true
-        findViewById<TextView>(R.id.login_signup_tv).text = "Not a member Click here to sign up"
+        findViewById<TextView>(R.id.login_signup_tv).text = "Not a member yet? Click here to SignUp"
         val loginFragment = LoginFragment()
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container_view, loginFragment)
+            .replace(R.id.registration_fragment_container_view, loginFragment)
             .commit()
     }
-
 
     fun onStartClick(view: View) {
         if (isUserLegit()) {
@@ -72,13 +71,13 @@ class RegistrationActivity : AppCompatActivity() {
             val intent = Intent(this, NotesActivity::class.java)
             startActivity(intent)
         } else {
-            Toast.makeText(this, "Halo halo you are not legit", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Halo Halo you not legit", Toast.LENGTH_LONG).show()
         }
+
     }
 
     private fun isUserLegit(): Boolean {
         return findViewById<EditText>(R.id.email_login_tv).text.toString() == userName &&
                 findViewById<EditText>(R.id.password_login_tv).text.toString() == password
     }
-
 }
