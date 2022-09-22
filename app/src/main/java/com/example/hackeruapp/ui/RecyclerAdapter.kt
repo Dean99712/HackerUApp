@@ -1,13 +1,16 @@
-package com.example.hackeruapp
+package com.example.hackeruapp.ui
 
+import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hackeruapp.model.Person
+import com.example.hackeruapp.R
 
 class RecyclerAdapter(
-    private val dataList: ArrayList<Person>,
+    val dataList: ArrayList<Person>,
     private val onPersonTitleClick: (Person) -> Unit,
     private val onRemoveButtonClick: (Person) -> Unit
 ) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
@@ -16,7 +19,7 @@ class RecyclerAdapter(
         val personCard: LinearLayout = itemView.findViewById(R.id.person_card_recycler)
         val textView: TextView = itemView.findViewById(R.id.item_name)
         val imageView: ImageView = itemView.findViewById(R.id.item_image)
-        val removeBtn: ImageButton = itemView.findViewById(R.id.remove_button)
+        val removeBtn: ImageButton = itemView.findViewById(R.id.edit_button)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -33,17 +36,23 @@ class RecyclerAdapter(
         holder.imageView.setOnClickListener {
         }
 
-        holder.textView.setOnClickListener {
-            onPersonTitleClick(person)
-        }
-
         holder.personCard.setOnClickListener {
-            onPersonTitleClick(person)
+            val dialog: AlertDialog.Builder = AlertDialog.Builder(it.rootView.context)
+            val dialogView: View =
+                LayoutInflater.from(it.rootView.context).inflate(R.layout.person_fragment, null)
+
+            val dialogProfileImage: ImageView = dialogView.findViewById(R.id.fragment_person_image)
+            val dialogProfileTitle: TextView = dialogView.findViewById(R.id.fragment_person_details)
+            dialogProfileTitle.text = person.name
+            dialogProfileImage.setImageResource(person.image)
+            dialog.setView(dialogView)
+            dialog.setCancelable(true)
+            dialog.show()
         }
 
 
         holder.removeBtn.setOnClickListener {
-            onRemoveButtonClick(person)
+            onPersonTitleClick(person)
         }
     }
 
@@ -56,4 +65,5 @@ class RecyclerAdapter(
         dataList.addAll(personList)
         notifyDataSetChanged()
     }
+
 }

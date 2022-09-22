@@ -1,4 +1,4 @@
-package com.example.hackeruapp
+package com.example.hackeruapp.model
 
 import android.content.Context
 import androidx.lifecycle.LiveData
@@ -10,7 +10,7 @@ class Repository private constructor(context: Context) {
         private lateinit var instance: Repository
 
         fun getInstance(context: Context) : Repository {
-            if (!::instance.isInitialized){
+            if (!Companion::instance.isInitialized){
                 instance = Repository(context)
             }
             return instance

@@ -5,16 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:layout_margin="30dp"
+    android:padding="25dp"
     tools:context=".UpdateFragment">
 
-    <com.google.android.material.textfield.TextInputEditText
+    <EditText
         android:id="@+id/et_person_update_name"
         android:layout_width="match_parent"
-
         android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/custom_input"
         android:hint="Your name "
         android:minHeight="48dp"
+        android:paddingLeft="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -26,11 +28,14 @@
         android:id="@+id/editTextTextPersonName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="25dp"
+        android:background="@drawable/custom_input"
         android:ems="10"
-        android:hint="Here you can tell more about yourselfe"
+        android:gravity="top|left"
+        android:hint="Tell more about yourself"
         android:inputType="textPersonName"
         android:minHeight="150dp"
-        android:textAlignment="center"
+        android:paddingLeft="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

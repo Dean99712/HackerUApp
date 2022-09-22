@@ -1,4 +1,4 @@
-package com.example.hackeruapp
+package com.example.hackeruapp.model
 
 import android.content.Context
 import androidx.room.Database
@@ -11,7 +11,7 @@ abstract class PersonDatabase : RoomDatabase() {
     abstract fun getNotesDao(): PeopleDao
 
     companion object{
-        fun getDatabase(context: Context):PersonDatabase {
+        fun getDatabase(context: Context): PersonDatabase {
             return Room.databaseBuilder(
                 context.applicationContext,
                 PersonDatabase::class.java,

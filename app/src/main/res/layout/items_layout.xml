@@ -24,9 +24,7 @@
             android:layout_width="9dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/ic_person"
-            android:background="@color/design_default_color_secondary"
-            />
+            android:src="@drawable/avatar_user" />
 
 
         <TextView
@@ -41,12 +39,13 @@
             android:textStyle="bold" />
 
         <ImageButton
-            android:id="@+id/remove_button"
+            android:id="@+id/edit_button"
             android:layout_width="1dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:src="@drawable/delete_outline_foreground"
+            android:src="@drawable/ic_edit"
             tools:ignore="SpeakableTextPresentCheck" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

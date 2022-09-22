@@ -1,12 +1,19 @@
 package com.example.hackeruapp
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hackeruapp.model.Person
+import com.example.hackeruapp.model.Repository
+import com.example.hackeruapp.ui.RecyclerAdapter
+import com.example.hackeruapp.ui.SwipeToDeleteCallBack
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlin.concurrent.thread
 
 
@@ -26,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setButtonClickListener() {
-        val button = findViewById<Button>(R.id.add_button)
+        val button = findViewById<FloatingActionButton>(R.id.add_button)
         val input = findViewById<EditText>(R.id.item_name_input)
         button.setOnClickListener {
             adapter.notifyDataSetChanged()
@@ -39,7 +46,7 @@ class MainActivity : AppCompatActivity() {
                     Repository.getInstance(this)
                         .addPerson(Person(input.text.toString(), R.drawable.ic_person))
                 }
-                Toast.makeText(this, "Successfully Added!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "${input.text} has Successfully added!", Toast.LENGTH_SHORT).show()
             }
         }
         createRecyclerView()
@@ -55,25 +62,22 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun onPersonTitleClick(): (Person) -> Unit = { person ->
-            val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
-            val dialogView: View =
-                LayoutInflater.from(this).inflate(R.layout.fragment_update, null)
+        val dialog: AlertDialog.Builder = AlertDialog.Builder(this)
+        val dialogView: View =
+            LayoutInflater.from(this).inflate(R.layout.fragment_update, null)
 
-            dialog.setView(dialogView)
-            dialog.setPositiveButton("Update") { dialog, which ->
-                val dialogPersonName =
-                    dialogView.findViewById<EditText?>(R.id.et_person_update_name).text.toString()
+        dialog.setView(dialogView)
+        dialog.setPositiveButton("Update") { dialog, which ->
+            val dialogPersonName =
+                dialogView.findViewById<EditText?>(R.id.et_person_update_name).text.toString()
 
-                if (!isInputValid()) {
-                    Toast.makeText(this, "Invalid Input!", Toast.LENGTH_SHORT).show()
-                } else {
-                    thread(start = true) {
-                        Repository.getInstance(this).updatePerson(person.id, dialogPersonName)
-                    }
-                }
+            thread(start = true) {
+                Repository.getInstance(this).updatePerson(person.id, dialogPersonName)
             }
-            dialog.setCancelable(true)
-            dialog.show()
+            Toast.makeText(this,"${person.name} updated successfully!", Toast.LENGTH_SHORT).show()
+        }
+        dialog.setCancelable(true)
+        dialog.show()
     }
 
     private fun onRemoveButtonClick(): (person: Person) -> Unit = { person ->
@@ -83,19 +87,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun showAlertDialogRemoveBtn(person: Person) {
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle("Delete item")
-            builder.setMessage("Are you sure you want to delete?")
-            builder.setPositiveButton("Confirm") { dialog, which ->
-                thread(start = true) {
-                    Repository.getInstance(this).deletePerson(person)
-                }
-                adapter.notifyItemRemoved(person.id)
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Delete item")
+        builder.setMessage("Are you sure you want to delete?")
+        builder.setPositiveButton("Confirm") { dialog, which ->
+            thread(start = true) {
+                Repository.getInstance(this).deletePerson(person)
             }
-            builder.setNegativeButton("Cancel") { dialog, which ->
-            }
-            builder.show()
+            adapter.notifyItemRemoved(person.id)
         }
+        builder.setNegativeButton("Cancel") { dialog, which ->
+        }
+        builder.show()
+    }
 //        private fun onPersonImageClick(): (Person) -> Unit {
 //
 //        }
@@ -107,6 +111,22 @@ class MainActivity : AppCompatActivity() {
         peopleListLiveData.observe(this) { personList ->
             adapter.viewUpdater(personList)
         }
+
+        val swipeToDeleteCallBack = object : SwipeToDeleteCallBack() {
+            @SuppressLint("ShowToast")
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val person = adapter.dataList[position]
+                thread(start = true){
+                    Repository.getInstance(applicationContext).deletePerson(person)
+                }
+                Toast.makeText(this@MainActivity, "You removed ${person.name}!",Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallBack)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
+
     }
 }
 
