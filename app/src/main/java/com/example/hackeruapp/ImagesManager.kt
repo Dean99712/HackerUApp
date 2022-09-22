@@ -27,7 +27,7 @@ object ImagesManager{
     }
 
 
-    fun onImageResultFromGallery(context: Context, note: Note, result: ActivityResult) {
+    fun onImageResultFromGallery(result: ActivityResult, note: Note, context: Context ) {
         Log.d("Test", "got content: $result")
         if (result.resultCode == AppCompatActivity.RESULT_OK) {
             val uri = result.data?.data
@@ -48,7 +48,6 @@ object ImagesManager{
     }
 
      fun getImageFromApi(note: Note, context: Context) {
-//        chosenNote = note
         val retrofit = ApiInterface.create()
         retrofit.getImages(note.title).enqueue(object : Callback<ApiResponse> {
             override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {

@@ -15,15 +15,6 @@ class LoginFragment : Fragment() {
 
     private val registrationViewModel: RegistrationViewModel by activityViewModels()
 
-    override fun onStart() {
-        super.onStart()
-        val editText = requireActivity().findViewById<EditText>(R.id.email_login_tv)
-        editText.setText(registrationViewModel.currentEmail)
-        editText.addTextChangedListener  {
-            registrationViewModel.currentEmail = it.toString()
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

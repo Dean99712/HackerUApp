@@ -3,6 +3,8 @@ package com.example.hackeruapp.ui
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -10,14 +12,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hackeruapp.*
 import com.example.hackeruapp.model.IMAGE_TYPE
 import com.example.hackeruapp.model.Note
 import com.example.hackeruapp.model.Repository
 import com.example.hackeruapp.viewmodel.NotesViewModel
-import com.example.hackeruapp.viewmodel.RegistrationViewModel
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -43,6 +44,9 @@ class NotesActivity : AppCompatActivity() {
         super.onStart()
         setButtonClickListener()
         createRecyclerView()
+        val userName =
+            getSharedPreferences(R.string.app_name.toString(), MODE_PRIVATE).getString("USER_NAME", "")
+        title_text_view.text = "Hello " + userName
     }
 
     private fun displayPersonDetailsFragment(note: Note) {
@@ -76,7 +80,7 @@ class NotesActivity : AppCompatActivity() {
 
     val getContent =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//            ImagesManager.getImageFromGallery()
+            ImagesManager.onImageResultFromGallery(result, chosenNote!!, this)
         }
 
     private fun addImageToNote(imagePath: String, imageType: IMAGE_TYPE) {
@@ -130,8 +134,31 @@ class NotesActivity : AppCompatActivity() {
             notesViewModel.currentTitleLiveData.value = note_title_et.text.toString()
         }
         notesViewModel.currentTitleLiveData.observe(this) {
-            title_text_view.text = "Youre going to add: $it"
+            title_text_view.text = "You are going to add: $it"
         }
-
     }
+
+//    private fun logoutFromFirebase() {
+//        val logoutIntent = Intent(this, RegistrationActivity::class.java)
+//        FirebaseAuth.getInstance().signOut()
+//        startActivity(logoutIntent)
+//    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        return when (item.itemId) {
+//            R.id.logout -> {
+//                logoutFromFirebase()
+//                true
+//            }
+//            R.id.about -> {
+//                true
+//            }
+//            else -> super.onOptionsItemSelected(item)
+//        }
+//    }
 }

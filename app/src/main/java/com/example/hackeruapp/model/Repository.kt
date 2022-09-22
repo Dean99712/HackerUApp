@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 class Repository private constructor(applicationContext: Context) {
     private val dao = NotesDatabase.getDatabase(applicationContext).getNotesDao()
 
-
     companion object{
         private lateinit var instance: Repository
 
