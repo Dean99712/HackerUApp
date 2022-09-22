@@ -10,14 +10,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hackeruapp.*
 import com.example.hackeruapp.model.IMAGE_TYPE
 import com.example.hackeruapp.model.Note
 import com.example.hackeruapp.model.Repository
 import com.example.hackeruapp.viewmodel.NotesViewModel
-import com.example.hackeruapp.viewmodel.RegistrationViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
