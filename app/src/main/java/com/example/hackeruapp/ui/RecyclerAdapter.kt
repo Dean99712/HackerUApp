@@ -1,25 +1,32 @@
 package com.example.hackeruapp.ui
 
-import android.app.AlertDialog
+import android.annotation.SuppressLint
+import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.hackeruapp.model.Person
 import com.example.hackeruapp.R
+import com.example.hackeruapp.model.IMAGE_TYPE
+
 
 class RecyclerAdapter(
     val dataList: ArrayList<Person>,
     private val onPersonTitleClick: (Person) -> Unit,
-    private val onRemoveButtonClick: (Person) -> Unit
+    private val onPersonImageClick: (Person) -> Unit,
+    private val onPersonCardClick: (Person) -> Unit,
+    val context: Context
 ) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val personCard: LinearLayout = itemView.findViewById(R.id.person_card_recycler)
         val textView: TextView = itemView.findViewById(R.id.item_name)
         val imageView: ImageView = itemView.findViewById(R.id.item_image)
-        val removeBtn: ImageButton = itemView.findViewById(R.id.edit_button)
+        val editButton: ImageButton = itemView.findViewById(R.id.edit_button)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -27,31 +34,26 @@ class RecyclerAdapter(
         return ViewHolder(view)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val person = dataList[position]
-
         holder.textView.text = person.name
-        holder.imageView.setImageResource(person.image)
+
+        if (person.imagePath != null) {
+            if (person.imageType == IMAGE_TYPE.URI) holder.imageView.setImageURI(Uri.parse(person.imagePath))
+            else Glide.with(context).load(person.imagePath).into(holder.imageView)
+        }
+
 
         holder.imageView.setOnClickListener {
+            onPersonImageClick(person)
         }
 
         holder.personCard.setOnClickListener {
-            val dialog: AlertDialog.Builder = AlertDialog.Builder(it.rootView.context)
-            val dialogView: View =
-                LayoutInflater.from(it.rootView.context).inflate(R.layout.person_fragment, null)
-
-            val dialogProfileImage: ImageView = dialogView.findViewById(R.id.fragment_person_image)
-            val dialogProfileTitle: TextView = dialogView.findViewById(R.id.fragment_person_details)
-            dialogProfileTitle.text = person.name
-            dialogProfileImage.setImageResource(person.image)
-            dialog.setView(dialogView)
-            dialog.setCancelable(true)
-            dialog.show()
+            onPersonCardClick(person)
         }
 
-
-        holder.removeBtn.setOnClickListener {
+        holder.editButton.setOnClickListener {
             onPersonTitleClick(person)
         }
     }

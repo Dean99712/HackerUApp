@@ -29,7 +29,11 @@ class Repository private constructor(context: Context) {
         dao.deletePerson(person)
     }
 
-    fun updatePerson(id : Int , person: String){
-        return dao.updatePerson(id , person)
+    fun updatePerson(id : Int , personName: String, personDetails: String){
+        return dao.updatePersonById(id , personName, personDetails)
+    }
+
+    fun updatePersonImage(person: Person, imagePath: String, imageType: IMAGE_TYPE) {
+        dao.updatePersonImage(person, imagePath, imageType)
     }
 }

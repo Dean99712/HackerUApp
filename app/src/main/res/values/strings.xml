@@ -20,4 +20,6 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="Allready_have_an_account_login">Allready have an account? Login</string>
 </resources>

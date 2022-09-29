@@ -19,13 +19,15 @@
         app:layout_constraintVertical_bias="0.0"
         app:layout_goneMarginRight="10dp">
 
+
         <ImageView
             android:id="@+id/item_image"
-            android:layout_width="9dp"
-            android:layout_height="wrap_content"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_gravity="center"
             android:layout_weight="1"
-            android:src="@drawable/avatar_user" />
-
+            android:padding="10dp"
+            android:src="@drawable/ic_person"/>
 
         <TextView
             android:id="@+id/item_name"
@@ -40,7 +42,7 @@
 
         <ImageButton
             android:id="@+id/edit_button"
-            android:layout_width="1dp"
+            android:layout_width="48dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_weight="1"
