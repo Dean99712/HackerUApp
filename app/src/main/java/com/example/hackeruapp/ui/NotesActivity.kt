@@ -1,17 +1,22 @@
 package com.example.hackeruapp.ui
 
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hackeruapp.*
 import com.example.hackeruapp.model.IMAGE_TYPE
@@ -20,6 +25,8 @@ import com.example.hackeruapp.model.Repository
 import com.example.hackeruapp.viewmodel.NotesViewModel
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -45,7 +52,10 @@ class NotesActivity : AppCompatActivity() {
         setButtonClickListener()
         createRecyclerView()
         val userName =
-            getSharedPreferences(R.string.app_name.toString(), MODE_PRIVATE).getString("USER_NAME", "")
+            getSharedPreferences(R.string.app_name.toString(), MODE_PRIVATE).getString(
+                "USER_NAME",
+                ""
+            )
         title_text_view.text = "Hello " + userName
     }
 
@@ -58,13 +68,14 @@ class NotesActivity : AppCompatActivity() {
             .commit()
     }
 
-    private fun createNewNote() {
+    private fun createNewNote(): Note {
         val noteTitle = findViewById<EditText>(R.id.note_title_et).text.toString()
         val noteDesc = findViewById<EditText>(R.id.note_desc_et).text.toString()
         val note = Note(noteTitle, noteDesc)
-        thread(start = true) {
+        notesViewModel.viewModelScope.launch(Dispatchers.IO) {
             notesViewModel.addNote(note)
         }
+        return note
     }
 
     private fun setButtonClickListener() {
@@ -100,24 +111,30 @@ class NotesActivity : AppCompatActivity() {
 
     private fun onNoteImageClick(): (note: Note) -> Unit = { note ->
         chosenNote = note
-        ImagesManager.displayImagesAlertDialog(this, note, getContent)
-        getImageFromApi(note)
+        displayImagesAlertDialog(this, chosenNote!!,getContent )
     }
 
-    private fun getImageFromApi(note: Note) {
-        chosenNote = note
-        val retrofit = ApiInterface.create()
-        retrofit.getImages(note.title).enqueue(object : Callback<ApiResponse> {
-            override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
-                val apiResponse = response.body()
-                val apiImage = apiResponse!!.imagesList[3]
-                addImageToNote(apiImage.imageUrl, IMAGE_TYPE.URL)
-            }
+    private fun displayImagesAlertDialog(
+        context: Context,
+        note: Note,
+        getContent: ActivityResultLauncher<Intent>
+    ) {
+        notesViewModel.viewModelScope.launch(Dispatchers.Main) {
+            val alertDialogBuilder = AlertDialog.Builder(context)
+            alertDialogBuilder.setTitle("Choose an image")
+            alertDialogBuilder.setMessage("Choose image for ${note.title}")
+            alertDialogBuilder.setNeutralButton("Cancel") { dialogInterface: DialogInterface, i: Int -> }
 
-            override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-                Log.e("Wrong api response", t.message.toString())
+            alertDialogBuilder.setPositiveButton("Gallery") { dialogInterface: DialogInterface, i: Int ->
+                ImagesManager.getImageFromGallery(note, getContent)
             }
-        })
+            alertDialogBuilder.setNegativeButton("Network") { dialogInterface: DialogInterface, i: Int ->
+                notesViewModel.viewModelScope.launch(Dispatchers.IO) {
+                    ImagesManager.getImageFromApi(note, context)
+                }
+            }
+            alertDialogBuilder.show()
+        }
     }
 
     private fun createRecyclerView() {
@@ -138,27 +155,9 @@ class NotesActivity : AppCompatActivity() {
         }
     }
 
-//    private fun logoutFromFirebase() {
-//        val logoutIntent = Intent(this, RegistrationActivity::class.java)
-//        FirebaseAuth.getInstance().signOut()
-//        startActivity(logoutIntent)
-//    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        return when (item.itemId) {
-//            R.id.logout -> {
-//                logoutFromFirebase()
-//                true
-//            }
-//            R.id.about -> {
-//                true
-//            }
-//            else -> super.onOptionsItemSelected(item)
-//        }
-//    }
 }

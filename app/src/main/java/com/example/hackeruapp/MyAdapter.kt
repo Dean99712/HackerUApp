@@ -39,6 +39,7 @@ class MyAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val note = dataList[position]
         holder.textView.text = note.title
+
         if(note.imageType!=null){
             if(note.imageType== IMAGE_TYPE.URI){
                 holder.imageView.setImageURI(Uri.parse(note.imagePath))
