@@ -39,11 +39,16 @@ class RecyclerAdapter(
         val person = dataList[position]
         holder.textView.text = person.name
 
-        if (person.imagePath != null) {
-            if (person.imageType == IMAGE_TYPE.URI) holder.imageView.setImageURI(Uri.parse(person.imagePath))
-            else Glide.with(context).load(person.imagePath).into(holder.imageView)
-        }
 
+        if (person.imageType != null) {
+            if (person.imageType == IMAGE_TYPE.URI) holder.imageView.setImageURI(Uri.parse(person.imagePath))
+            else if (person.imageType == IMAGE_TYPE.URL) {
+                Glide.with(context)
+                    .load(person.imagePath)
+                    .override(75, 75)
+                    .into(holder.imageView)
+            }
+        }
 
         holder.imageView.setOnClickListener {
             onPersonImageClick(person)

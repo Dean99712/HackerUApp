@@ -29,11 +29,11 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun goToLoginActivityOnClick() {
         binding.continueButtonSignup.setOnClickListener {
-            createFireBaseUserWithCredentials()
+            createFirebaseUserWithCredentials()
         }
     }
 
-    private fun createFireBaseUserWithCredentials() {
+    private fun createFirebaseUserWithCredentials() {
         val email = email_signup_et.text.toString()
         val password = password_signup_et.text.toString()
 
@@ -43,7 +43,6 @@ class SignUpActivity : AppCompatActivity() {
             if (it.isSuccessful) {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
-                finish()
                 Toast.makeText(this, "Signed up successfully!", Toast.LENGTH_LONG).show()
 
             } else Toast.makeText(this, it.exception?.message, Toast.LENGTH_SHORT).show()

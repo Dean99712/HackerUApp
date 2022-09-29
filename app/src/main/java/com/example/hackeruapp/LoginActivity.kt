@@ -34,8 +34,9 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
-        } else
+        } else {
             intent = Intent(this, LoginActivity::class.java)
+        }
     }
 
     private fun onButtonCLick() {
