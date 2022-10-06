@@ -32,9 +32,21 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
+                paddingBottomSystemWindowInsets="@{true}"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:hint="Write Something about yourself" />
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@android:color/transparent"
+                android:gravity="top"
+                android:hint="Some Details About you"
+                android:minHeight="250dp"
+                android:paddingBottom="32dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:lineHeight="24sp"
+
+                />
 
         </com.google.android.material.textfield.TextInputLayout>
 
