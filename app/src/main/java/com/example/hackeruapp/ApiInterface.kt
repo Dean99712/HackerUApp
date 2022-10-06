@@ -7,9 +7,9 @@ import retrofit2.http.GET
 
 interface ApiInterface {
 
-//https://pixabay.com/api/?key=29958309-9a80dea824f08f90c70b785ca?image_type=photo&pretty=true&q=person
+//https://pixabay.com/api/?key=29958309-9a80dea824f08f90c70b785ca&image_type=photo&pretty=true&q=person
 
-    @GET("?key=29958309-9a80dea824f08f90c70b785ca?image_type=photo&pretty=true&q=person")
+    @GET("https://pixabay.com/api/?key=29958309-9a80dea824f08f90c70b785ca&image_type=photo&pretty=true&q=person&min_width=410&per_page=200")
     fun getImages(): Call<ApiResponse>
 
     companion object {

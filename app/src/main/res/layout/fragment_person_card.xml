@@ -12,10 +12,10 @@
 
         <ImageView
             android:id="@+id/fragment_person_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="match_parent"
+            android:layout_height="163dp"
             android:layout_gravity="center"
-            android:layout_margin="25dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_person" />
 
         <TextView
@@ -27,6 +27,12 @@
             android:text="personName"
             android:textStyle="bold" />
 
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dividerInsetEnd="16dp"
+            app:dividerInsetStart="16dp" />
+
         <TextView
             android:id="@+id/fragment_person_details"
             android:layout_width="match_parent"
@@ -34,7 +40,7 @@
             android:gravity="center|top"
             android:hint="Details not yet added "
             android:paddingHorizontal="25dp"
-            android:paddingBottom="50dp"/>
+            android:paddingBottom="50dp" />
     </LinearLayout>
 
 </RelativeLayout>

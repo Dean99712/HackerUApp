@@ -1,6 +1,5 @@
 package com.example.hackeruapp
 
-import android.app.AlertDialog
 import android.content.Context
 import android.net.Uri
 import android.view.LayoutInflater
@@ -9,17 +8,21 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.bumptech.glide.Glide
+import com.example.hackeruapp.model.IMAGE_TYPE
 import com.example.hackeruapp.model.Person
 import com.example.hackeruapp.model.Repository
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import kotlin.concurrent.thread
 
 object RecyclerFunctions {
 
     fun onPersonClick(context: Context, person: Person) {
 
-        val dialog: AlertDialog.Builder = AlertDialog.Builder(context)
+        val dialog = MaterialAlertDialogBuilder(context)
         val dialogView: View =
-            LayoutInflater.from(context).inflate(R.layout.person_fragment, null)
+            LayoutInflater.from(context).inflate(R.layout.fragment_person_card, null)
 
         val dialogProfileImage: ImageView = dialogView.findViewById(R.id.fragment_person_image)
         val dialogProfileName: TextView = dialogView.findViewById(R.id.fragment_person_name)
@@ -28,16 +31,20 @@ object RecyclerFunctions {
         dialogProfileDetails.text = person.details
         if (person.imagePath == null)
             dialogProfileImage.setImageResource(R.drawable.ic_person)
-        else
-            dialogProfileImage.setImageURI(Uri.parse(person.imagePath))
+        else{
+            if (person.imageType == IMAGE_TYPE.URI)
+                dialogProfileImage.setImageURI(Uri.parse(person.imagePath))
+            else
+                Glide.with(context).load(person.imagePath).into(dialogProfileImage)
+        }
         dialog.setView(dialogView)
         dialog.setCancelable(true)
         dialog.show()
     }
 
-    fun onPersonTitleClick(context: Context, person: Person) {
-        val dialog: AlertDialog.Builder = AlertDialog.Builder(context)
-        val dialogView: View = LayoutInflater.from(context).inflate(R.layout.fragment_update, null)
+    fun onPersonTitleClick(view: View, context: Context, person: Person) {
+        val dialog = MaterialAlertDialogBuilder(context)
+        val dialogView: View = LayoutInflater.from(context).inflate(R.layout.fragment_person_update, null)
 
         dialog.setView(dialogView)
         dialog.setPositiveButton("Update") { dialog, which ->
@@ -47,11 +54,10 @@ object RecyclerFunctions {
                 dialogView.findViewById<EditText?>(R.id.et_person_update_details).text.toString()
 
             if (dialogPersonName.isNullOrEmpty() || dialogPersonDetails.isNullOrEmpty()) {
-                Toast.makeText(
-                    context,
-                    "Failed to update ${person.name}! Please try again...",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Snackbar.make(view, "Failed to update ${person.name}! Please try again...", Snackbar.LENGTH_LONG).setAction("Retry") {
+                    onPersonTitleClick(view, context, person)
+                }.show()
+
             } else {
                 thread(start = true) {
                     Repository.getInstance(context)

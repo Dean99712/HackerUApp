@@ -45,7 +45,7 @@
         android:layout_width="300dp"
 
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/custom_input"
         android:drawableLeft="@drawable/ic_baseline_lock_24"
         android:drawablePadding="10dp"
@@ -64,7 +64,7 @@
         android:id="@+id/conrinue_login"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/custom_button"
         android:text="Continue"
         app:layout_constraintEnd_toEndOf="parent"

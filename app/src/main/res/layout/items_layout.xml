@@ -27,7 +27,8 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:padding="10dp"
-            android:src="@drawable/ic_person"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_person" />
 
         <TextView
             android:id="@+id/item_name"
@@ -49,5 +50,17 @@
             android:background="#FFFFFF"
             android:src="@drawable/ic_edit"
             tools:ignore="SpeakableTextPresentCheck" />
+
     </LinearLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:dividerInsetEnd="16dp"
+        app:dividerInsetStart="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/person_card_recycler" />
 </androidx.constraintlayout.widget.ConstraintLayout>

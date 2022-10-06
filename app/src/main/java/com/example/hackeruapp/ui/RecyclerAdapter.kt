@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import android.widget.ImageView.ScaleType
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.hackeruapp.model.Person
@@ -34,21 +35,17 @@ class RecyclerAdapter(
         return ViewHolder(view)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint("NotifyDataSetChanged", "SuspiciousIndentation")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val person = dataList[position]
         holder.textView.text = person.name
 
-
-        if (person.imageType != null) {
-            if (person.imageType == IMAGE_TYPE.URI) holder.imageView.setImageURI(Uri.parse(person.imagePath))
-            else if (person.imageType == IMAGE_TYPE.URL) {
-                Glide.with(context)
-                    .load(person.imagePath)
-                    .override(75, 75)
-                    .into(holder.imageView)
-            }
+        when (person.imageType) {
+            null -> Glide.with(context).load(R.drawable.ic_person).centerInside().into(holder.imageView)
+            IMAGE_TYPE.URI -> holder.imageView.setImageURI(Uri.parse(person.imagePath))
+            IMAGE_TYPE.URL -> Glide.with(context).load(person.imagePath).into(holder.imageView)
         }
+
 
         holder.imageView.setOnClickListener {
             onPersonImageClick(person)
@@ -67,10 +64,12 @@ class RecyclerAdapter(
         return dataList.size
     }
 
-    fun viewUpdater(personList: List<Person>) {
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateRecyclerView(personList: List<Person>) {
         dataList.clear()
         dataList.addAll(personList)
         notifyDataSetChanged()
+
     }
 
 }

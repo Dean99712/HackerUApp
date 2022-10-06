@@ -14,7 +14,7 @@
         android:id="@+id/updateFragment"
         android:name="com.example.hackeruapp.UpdateFragment"
         android:label="fragment_update"
-        tools:layout="@layout/fragment_update" >
+        tools:layout="@layout/fragment_person_update" >
         <action
             android:id="@+id/action_updateFragment_to_mainActivity"
             app:destination="@id/mainActivity" />

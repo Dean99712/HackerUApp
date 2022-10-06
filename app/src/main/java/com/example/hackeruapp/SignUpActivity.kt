@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import android.widget.Toast.makeText
 import com.example.hackeruapp.databinding.ActivitySignupBinding
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_signup.*
@@ -43,11 +44,11 @@ class SignUpActivity : AppCompatActivity() {
             if (it.isSuccessful) {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
-                Toast.makeText(this, "Signed up successfully!", Toast.LENGTH_LONG).show()
+                makeText(this, "Signed up successfully!", Toast.LENGTH_LONG).show()
 
-            } else Toast.makeText(this, it.exception?.message, Toast.LENGTH_SHORT).show()
+            } else makeText(this, it.exception?.message, Toast.LENGTH_SHORT).show()
         }
-        else Toast.makeText(this, "Email or Password Cannot be empty!", Toast.LENGTH_SHORT).show()
+        else makeText(this, "Email or Password Cannot be empty!", Toast.LENGTH_SHORT).show()
     }
 
 }
