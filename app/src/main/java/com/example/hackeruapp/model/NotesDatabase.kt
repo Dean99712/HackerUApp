@@ -3,10 +3,13 @@ package com.example.hackeruapp.model
 import android.content.Context
 import androidx.room.*
 
-@Database(entities = arrayOf(Note::class), version = 1)
+@Database(entities = arrayOf(Note::class, User::class), version = 1)
+
+@TypeConverters(Converters::class)
 abstract class NotesDatabase : RoomDatabase() {
 
     abstract fun getNotesDao(): NotesDao
+    abstract fun getUsersDao(): UserDao
 
     companion object {
 

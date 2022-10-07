@@ -126,7 +126,7 @@ class NotesActivity : AppCompatActivity() {
             alertDialogBuilder.setNeutralButton("Cancel") { dialogInterface: DialogInterface, i: Int -> }
 
             alertDialogBuilder.setPositiveButton("Gallery") { dialogInterface: DialogInterface, i: Int ->
-                ImagesManager.getImageFromGallery(note, getContent)
+                getImageFromGallery(note)
             }
             alertDialogBuilder.setNegativeButton("Network") { dialogInterface: DialogInterface, i: Int ->
                 notesViewModel.viewModelScope.launch(Dispatchers.IO) {

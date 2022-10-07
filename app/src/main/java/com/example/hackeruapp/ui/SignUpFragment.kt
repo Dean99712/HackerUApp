@@ -11,8 +11,14 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
+import com.example.hackeruapp.FirebaseManager
 import com.example.hackeruapp.R
+import com.example.hackeruapp.model.NotesList
+import com.example.hackeruapp.model.Repository
+import com.example.hackeruapp.model.SharedPreferencesManager
+import com.example.hackeruapp.model.User
 import com.example.hackeruapp.viewmodel.RegistrationViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -81,17 +87,69 @@ class SignUpFragment : Fragment() {
                 if (it.signInMethods.isNullOrEmpty()) {
                     registerToNotesAppWithFireBase(googleSignInAccount)
                 } else {
-                    getIntoApp(googleSignInAccount.displayName.toString())
+                    FirebaseManager.getInstance(requireContext()).getUser()
+                        .addOnSuccessListener{
+                            val user = it.toObject(User::class.java)
+                            println(user)
+                            getIntoApp(googleSignInAccount.displayName.toString())
+                        }
+                        .addOnFailureListener{}
                 }
             }
             .addOnFailureListener { displayToast("Failed !") }
     }
 
+//    private fun registerToNotesAppWithFireBase(googleSignInAccount: GoogleSignInAccount) {
+//        val authCredential = GoogleAuthProvider.getCredential(googleSignInAccount.idToken, null)
+//        firebaseAuth.signInWithCredential(authCredential)
+//            .addOnSuccessListener {
+//                val user = User(
+//                    googleSignInAccount.email!!,
+//                    googleSignInAccount.givenName!!,
+//                    googleSignInAccount.familyName!!,
+//                    NotesList()
+//                )
+//                SharedPreferencesManager.myUser = user
+//
+//                requireActivity().getSharedPreferences(
+//                    R.string.app_name.toString(),
+//                    AppCompatActivity.MODE_PRIVATE
+//                )
+//                    .edit().putString("USER_EMAIL", user.email).apply()
+//                FirebaseManager.getInstance(requireContext()).addUser(user)
+//                    .addOnSuccessListener {
+//                        Repository.getInstance(requireContext()).addUser(user)
+//                        getIntoApp(googleSignInAccount.displayName.toString())
+//                    }
+//                    .addOnFailureListener { println(it)}
+//
+//            }
+//            .addOnFailureListener { displayToast("Please try again later! Exception: ${it.message}") }
+//    }
+
     private fun registerToNotesAppWithFireBase(googleSignInAccount: GoogleSignInAccount) {
         val authCredential = GoogleAuthProvider.getCredential(googleSignInAccount.idToken, null)
         firebaseAuth.signInWithCredential(authCredential)
-            .addOnSuccessListener { }
-            .addOnFailureListener { displayToast("Please try again later! Exception: ${it.message}") }
+            .addOnSuccessListener {
+                val user = User(
+                    googleSignInAccount.email!!,
+                    googleSignInAccount.givenName!!,
+                    googleSignInAccount.familyName!!,
+                    NotesList()
+                )
+                SharedPreferencesManager.myUser = user
+
+                FirebaseManager.getInstance(requireContext()).addUser(user)
+                    .addOnSuccessListener {
+                        Repository.getInstance(requireContext()).addUser(user)
+                        getIntoApp(googleSignInAccount.displayName.toString())
+
+                    }
+                    .addOnFailureListener { println(it) }
+            }
+            .addOnFailureListener {
+                displayToast("Please try again later Exception: ${it.message}")
+            }
     }
 
 
