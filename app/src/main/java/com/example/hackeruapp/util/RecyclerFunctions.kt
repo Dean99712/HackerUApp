@@ -1,19 +1,20 @@
-package com.example.hackeruapp
+package com.example.hackeruapp.util
 
 import android.content.Context
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
-import com.example.hackeruapp.model.IMAGE_TYPE
-import com.example.hackeruapp.model.Person
-import com.example.hackeruapp.model.Repository
+import com.example.hackeruapp.R
+import com.example.hackeruapp.model.person.IMAGE_TYPE
+import com.example.hackeruapp.model.person.Person
+import com.example.hackeruapp.data.Repository
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
 import kotlin.concurrent.thread
 
 object RecyclerFunctions {
@@ -49,9 +50,9 @@ object RecyclerFunctions {
         dialog.setView(dialogView)
         dialog.setPositiveButton("Update") { dialog, which ->
             val dialogPersonName =
-                dialogView.findViewById<EditText?>(R.id.et_person_update_name).text.toString()
+                dialogView.findViewById<TextInputEditText>(R.id.et_person_update_name).text.toString()
             val dialogPersonDetails =
-                dialogView.findViewById<EditText?>(R.id.et_person_update_details).text.toString()
+                dialogView.findViewById<TextInputEditText>(R.id.et_person_update_details).text.toString()
 
             if (dialogPersonName.isNullOrEmpty() || dialogPersonDetails.isNullOrEmpty()) {
                 Snackbar.make(view, "Failed to update ${person.name}! Please try again...", Snackbar.LENGTH_LONG).setAction("Retry") {

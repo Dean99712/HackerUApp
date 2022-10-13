@@ -5,6 +5,9 @@
     <string name="email">Email</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="start_capture">Start Capture</string>
+    <string name="stop_capture">Stop Capture</string>
     <string name="remove">remove</string>
     <string name="name_of_the_person_you_want_to_add">name of the person you want to add</string>
     <string name="add_name">add name</string>
@@ -25,4 +28,5 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="add_new_person">Add new person</string>
+    <string name="enter_name">Enter Name</string>
 </resources>

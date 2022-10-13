@@ -1,9 +1,11 @@
-package com.example.hackeruapp
+package com.example.hackeruapp.ui.register
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.example.hackeruapp.ui.MainActivity
+import com.example.hackeruapp.R
 import com.example.hackeruapp.databinding.ActivityLoginBinding
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
@@ -24,7 +26,7 @@ class LoginActivity : AppCompatActivity() {
         binding.directSignupTv.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
-            finish()
+            overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left)
         }
     }
 
@@ -55,6 +57,7 @@ class LoginActivity : AppCompatActivity() {
             if (it.isSuccessful) {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.transition.slide_in_bottom, R.transition.slide_out_top)
                 finish()
             } else Toast.makeText(this, it.exception?.message, Toast.LENGTH_SHORT).show()
         }

@@ -1,11 +1,11 @@
-package com.example.hackeruapp.model
+package com.example.hackeruapp.model.person
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 enum class IMAGE_TYPE {
-    URI, URL
+    URI, URL, BMP
 }
 
 @Entity(tableName = "peopleTable")

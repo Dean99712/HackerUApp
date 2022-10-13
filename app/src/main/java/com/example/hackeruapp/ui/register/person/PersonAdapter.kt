@@ -1,4 +1,4 @@
-package com.example.hackeruapp.ui
+package com.example.hackeruapp.ui.register.person
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -7,21 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import android.widget.ImageView.ScaleType
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.hackeruapp.model.Person
 import com.example.hackeruapp.R
-import com.example.hackeruapp.model.IMAGE_TYPE
+import com.example.hackeruapp.model.person.IMAGE_TYPE
+import com.example.hackeruapp.model.person.Person
 
-
-class RecyclerAdapter(
+class PersonAdapter(
     val dataList: ArrayList<Person>,
     private val onPersonTitleClick: (Person) -> Unit,
     private val onPersonImageClick: (Person) -> Unit,
     private val onPersonCardClick: (Person) -> Unit,
     val context: Context
-) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<PersonAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val personCard: LinearLayout = itemView.findViewById(R.id.person_card_recycler)
@@ -39,11 +37,12 @@ class RecyclerAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val person = dataList[position]
         holder.textView.text = person.name
-
         when (person.imageType) {
-            null -> Glide.with(context).load(R.drawable.ic_person).centerInside().into(holder.imageView)
+            null -> Glide.with(context).load(R.drawable.ic_person).centerInside()
+                .into(holder.imageView)
             IMAGE_TYPE.URI -> holder.imageView.setImageURI(Uri.parse(person.imagePath))
             IMAGE_TYPE.URL -> Glide.with(context).load(person.imagePath).into(holder.imageView)
+            IMAGE_TYPE.BMP -> Glide.with(context).asBitmap().load(person.imagePath).into(holder.imageView)
         }
 
 
@@ -71,5 +70,6 @@ class RecyclerAdapter(
         notifyDataSetChanged()
 
     }
-
 }
+
+

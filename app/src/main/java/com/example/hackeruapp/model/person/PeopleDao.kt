@@ -1,4 +1,4 @@
-package com.example.hackeruapp.model
+package com.example.hackeruapp.model.person
 
 import androidx.lifecycle.LiveData
 import androidx.room.*

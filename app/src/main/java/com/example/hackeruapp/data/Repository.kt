@@ -1,7 +1,10 @@
-package com.example.hackeruapp.model
+package com.example.hackeruapp.data
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import com.example.hackeruapp.model.person.IMAGE_TYPE
+import com.example.hackeruapp.model.person.Person
+import com.example.hackeruapp.model.person.PersonDatabase
 
 class Repository private constructor(context: Context) {
     private val dao = PersonDatabase.getDatabase(context).getNotesDao()

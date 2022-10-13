@@ -1,4 +1,4 @@
-package com.example.hackeruapp
+package com.example.hackeruapp.api
 
 import retrofit2.Call
 import retrofit2.Retrofit

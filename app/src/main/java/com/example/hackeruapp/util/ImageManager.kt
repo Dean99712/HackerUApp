@@ -1,26 +1,62 @@
-package com.example.hackeruapp
+package com.example.hackeruapp.util
 
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.example.hackeruapp.model.IMAGE_TYPE
-import com.example.hackeruapp.model.Person
-import com.example.hackeruapp.model.Repository
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.example.hackeruapp.api.ApiInterface
+import com.example.hackeruapp.api.ApiResponse
+import com.example.hackeruapp.data.Repository
+import com.example.hackeruapp.model.person.IMAGE_TYPE
+import com.example.hackeruapp.model.person.Person
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.ByteArrayOutputStream
 import kotlin.concurrent.thread
+
 
 object ImageManager {
 
-    private fun getImageFromGallery(person: Person, getContent: ActivityResultLauncher<Intent>) {
+    fun takePicture(person: Person, getContent: ActivityResultLauncher<Intent>) {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        getContent.launch(intent)
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    fun onImageResultFromCamera(
+        result: ActivityResult,
+        person: Person,
+        context: Context
+    ) {
+        if (result.resultCode == AppCompatActivity.RESULT_OK) {
+            val bitmap = result.data?.extras?.get("data") as Bitmap
+            val arrayOfBytes = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, arrayOfBytes)
+
+            val path = MediaStore.Images.Media.insertImage(
+                context.contentResolver,
+                bitmap,
+                "title",
+                null
+            )
+            val uri = Uri.parse(path)
+            GlobalScope.launch(Dispatchers.IO) {
+                addImageToPerson(person, uri.toString(), IMAGE_TYPE.BMP, context)
+            }
+        }
+    }
+
+    fun getImageFromGallery(person: Person, getContent: ActivityResultLauncher<Intent>) {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = "image/*"
@@ -41,7 +77,7 @@ object ImageManager {
         }
     }
 
-    private fun addImageToPerson(
+    fun addImageToPerson(
         person: Person, imagePath: String, imageType: IMAGE_TYPE, context: Context
     ) {
         thread(start = true) {
@@ -49,7 +85,7 @@ object ImageManager {
         }
     }
 
-    private fun getImageFromApi(person: Person, context: Context) {
+    fun getImageFromApi(person: Person, context: Context) {
         val retrofit = ApiInterface.create()
         retrofit.getImages().enqueue(object : Callback<ApiResponse> {
 
@@ -61,30 +97,8 @@ object ImageManager {
             }
 
             override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-                Log.d(t.message,"onFailure: Wrong Api Response ")
+                Log.d(t.message, "onFailure: Wrong Api Response ")
             }
         })
-    }
-
-
-    fun displayImagesAlertDialog(
-        context: Context,
-        person: Person,
-        getContent: ActivityResultLauncher<Intent>
-    ) {
-        val dialog = MaterialAlertDialogBuilder(context)
-        dialog.setTitle("Choose an image")
-        dialog.setMessage("Choose image for ${person.name}")
-        dialog.setNeutralButton("Cancel") { dialogInterface: DialogInterface, i: Int -> }
-        dialog.setPositiveButton("Camera") { dialogInterface: DialogInterface, i: Int ->
-
-        }
-        dialog.setPositiveButton("Gallery") { dialogInterface: DialogInterface, i: Int ->
-            getImageFromGallery(person, getContent)
-        }
-        dialog.setNegativeButton("Network") { dialogInterface: DialogInterface, i: Int ->
-            getImageFromApi(person, context)
-        }
-        dialog.show()
     }
 }

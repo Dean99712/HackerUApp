@@ -1,4 +1,4 @@
-package com.example.hackeruapp.model
+package com.example.hackeruapp.model.person
 
 import android.content.Context
 import androidx.room.Database

@@ -1,4 +1,4 @@
-package com.example.hackeruapp
+package com.example.hackeruapp.api
 
 import com.google.gson.annotations.SerializedName
 
