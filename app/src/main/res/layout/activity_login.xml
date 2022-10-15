@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    android:id="@+id/loginActivity"
+    tools:context=".ui.register.LoginActivity">
 
 
     <TextView
@@ -61,11 +62,12 @@
         app:layout_constraintTop_toBottomOf="@+id/email_login_et" />
 
     <Button
-        android:id="@+id/conrinue_login"
+        android:id="@+id/continue_button_login"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:background="@drawable/custom_button"
+        android:textSize="16dp"
+        android:background="@
         android:text="Continue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -82,7 +84,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.612"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/conrinue_login" />
+        app:layout_constraintTop_toBottomOf="@+id/continue_button_login" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

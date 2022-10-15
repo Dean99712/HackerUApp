@@ -32,7 +32,7 @@ object RecyclerFunctions {
         dialogProfileDetails.text = person.details
         if (person.imagePath == null)
             dialogProfileImage.setImageResource(R.drawable.ic_person)
-        else{
+        else {
             if (person.imageType == IMAGE_TYPE.URI)
                 dialogProfileImage.setImageURI(Uri.parse(person.imagePath))
             else
@@ -45,7 +45,8 @@ object RecyclerFunctions {
 
     fun onPersonTitleClick(view: View, context: Context, person: Person) {
         val dialog = MaterialAlertDialogBuilder(context)
-        val dialogView: View = LayoutInflater.from(context).inflate(R.layout.fragment_person_update, null)
+        val dialogView: View =
+            LayoutInflater.from(context).inflate(R.layout.fragment_person_update, null)
 
         dialog.setView(dialogView)
         dialog.setPositiveButton("Update") { dialog, which ->
@@ -55,7 +56,11 @@ object RecyclerFunctions {
                 dialogView.findViewById<TextInputEditText>(R.id.et_person_update_details).text.toString()
 
             if (dialogPersonName.isNullOrEmpty() || dialogPersonDetails.isNullOrEmpty()) {
-                Snackbar.make(view, "Failed to update ${person.name}! Please try again...", Snackbar.LENGTH_LONG).setAction("Retry") {
+                Snackbar.make(
+                    view,
+                    "Failed to update ${person.name}! Please try again...",
+                    Snackbar.LENGTH_LONG
+                ).setAction("Retry") {
                     onPersonTitleClick(view, context, person)
                 }.show()
 
@@ -71,5 +76,12 @@ object RecyclerFunctions {
         dialog.setNeutralButton("Cancel") { dialog, which -> }
         dialog.setCancelable(true)
         dialog.show()
+    }
+
+    fun isInputValid(input: String): Boolean {
+        if (input.contains("[a-zA-Z]".toRegex())) {
+            return true
+        }
+        return false
     }
 }

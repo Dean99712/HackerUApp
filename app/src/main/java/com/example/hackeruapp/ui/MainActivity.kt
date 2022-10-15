@@ -1,53 +1,51 @@
 package com.example.hackeruapp.ui
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.*
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultCallback
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
 import com.example.hackeruapp.R
 import com.example.hackeruapp.data.Repository
 import com.example.hackeruapp.databinding.ActivityMainBinding
 import com.example.hackeruapp.model.person.Person
-import com.example.hackeruapp.ui.register.person.PersonAdapter
 import com.example.hackeruapp.ui.register.LoginActivity
 import com.example.hackeruapp.ui.register.person.PersonFragmentDirections
 import com.example.hackeruapp.util.*
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.transition.MaterialElevationScale
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.*
 import kotlin.concurrent.thread
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),
+    NavController.OnDestinationChangedListener {
 
     private lateinit var binding: ActivityMainBinding
-    private var person: Person? = null
-    private var adapter = PersonAdapter(
-        arrayListOf(),
-        onPersonTitleClick(),
-        onPersonImageClick(),
-        onPersonCardClick(),
-        this
-    )
+
+    private val currentNavigationFragment: Fragment?
+        get() = supportFragmentManager.findFragmentById(R.id.fragmentContainerView)
+            ?.childFragmentManager
+            ?.fragments
+            ?.first()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setButtonClickListener()
         setSupportActionBar(binding.bottomNavBar)
+        setBottomNavigationAndFab()
+        setButtonClickListener()
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -55,68 +53,56 @@ class MainActivity : AppCompatActivity() {
 
         val button = findViewById<FloatingActionButton>(R.id.fab)
         val input = findViewById<EditText>(R.id.item_name_input)
+//        binding.fab.apply {
+//            setShowMotionSpecResource(R.animator.fab_show)
+//            setHideMotionSpecResource(R.animator.fab_hide)
+//            setOnClickListener {
+//                navigateToPersonFragment()
+//                hideBottomAppBar()
+//            }
+//        }
+
         button.setOnClickListener {
 
-//            val directions = PersonFragmentDirections.actionGlobalPersonFragment()
-//            findNavController(R.id.fragmentContainerView).navigate(directions)
             addPersonToList(input.text.toString())
             if (input.text.toString().isNotEmpty())
                 input.setText("")
-            adapter.notifyDataSetChanged()
         }
-        createRecyclerView()
+
     }
 
-//    private fun hideBottomAppBar() {
-//        binding.run {
-//            bottomNavBar.performHide()
-//
-//            bottomNavBar.animate().setListener(object : AnimatorListenerAdapter() {
-//                var isCanceled = false
-//                override fun onAnimationEnd(animation: Animator) {
-//                    super.onAnimationEnd(animation)
-//                    if (isCanceled) return
-//                    bottomNavBar.visibility = View.GONE
-//                    fab.visibility = View.INVISIBLE
-//                }
-//
-//                override fun onAnimationCancel(animation: Animator) {
-//                    super.onAnimationCancel(animation)
-//                    isCanceled = true
-//                }
-//            })
-//        }
-//    }
-
-    private val getContentFromCamera =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        ImageManager.onImageResultFromCamera(result,person!!, this)
-    }
-
-    private val getContentFromGallery =
-        registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()) { result ->
-                ImageManager.onImageResultFromGallery(result, person!!, this)
+    private fun navigateToPersonFragment() {
+        currentNavigationFragment?.apply {
+            exitTransition = MaterialElevationScale(false).apply {
+                duration = 300L
             }
-
-    private fun onPersonImageClick(): (person: Person) -> Unit = {
-        person = it
-
-        val dialog = MaterialAlertDialogBuilder(this)
-        dialog.setTitle("Choose an image")
-        dialog.setMessage("Choose image for ${person!!.name}")
-
-        dialog.setNeutralButton("Camera") { dialogInterface: DialogInterface, i: Int ->
-            ImageManager.takePicture(person!!, getContentFromCamera)
+            reenterTransition = MaterialElevationScale(true).apply {
+                duration = 300L
+            }
         }
-        dialog.setPositiveButton("Gallery") { dialogInterface: DialogInterface, i: Int ->
+        val directions = PersonFragmentDirections.actionGlobalPersonFragment()
+        findNavController(R.id.fragmentContainerView).navigate(directions)
+    }
 
-            ImageManager.getImageFromGallery(person!!, getContentFromGallery)
+    private fun hideBottomAppBar() {
+        binding.run {
+            bottomNavBar.performHide()
+
+            bottomNavBar.animate().setListener(object : AnimatorListenerAdapter() {
+                var isCanceled = false
+                override fun onAnimationEnd(animation: Animator) {
+                    super.onAnimationEnd(animation)
+                    if (isCanceled) return
+                    bottomNavBar.visibility = View.GONE
+                    fab.visibility = View.INVISIBLE
+                }
+
+                override fun onAnimationCancel(animation: Animator) {
+                    super.onAnimationCancel(animation)
+                    isCanceled = true
+                }
+            })
         }
-        dialog.setNegativeButton("Network") { dialogInterface: DialogInterface, i: Int ->
-            ImageManager.getImageFromApi(person!!, this)
-        }
-        dialog.show()
     }
 
     private fun addPersonToList(input: String) {
@@ -132,7 +118,40 @@ class MainActivity : AppCompatActivity() {
                 Snackbar.LENGTH_SHORT
             ).show()
             NotificationsManager.displayNotification(this@MainActivity, Person(input))
+        }
+    }
 
+    private fun setBottomNavigationAndFab() {
+        binding.run {
+            findNavController(R.id.fragmentContainerView).addOnDestinationChangedListener(
+                this@MainActivity
+            )
+        }
+    }
+
+    override fun onDestinationChanged(
+        controller: NavController,
+        destination: NavDestination,
+        arguments: Bundle?
+    ) {
+        when (destination.id) {
+            R.id.homeFragment -> {
+                setBottomAppBarForHome()
+            }
+            R.id.personFragment -> setBottomAppBarForPerson()
+        }
+    }
+
+    private fun setBottomAppBarForPerson() {
+        hideBottomAppBar()
+    }
+
+    private fun setBottomAppBarForHome() {
+        binding.run {
+            fab.setImageState(intArrayOf(-android.R.attr.state_activated), true)
+            bottomNavBar.visibility = View.VISIBLE
+            bottomNavBar.performShow()
+            fab.show()
         }
     }
 
@@ -141,58 +160,6 @@ class MainActivity : AppCompatActivity() {
             return true
         }
         return false
-    }
-
-    private fun onPersonTitleClick(): (Person) -> Unit = { person ->
-        RecyclerFunctions.onPersonTitleClick(main_activity_layout, this, person)
-    }
-
-    private fun onPersonCardClick(): (Person) -> Unit = { person ->
-        RecyclerFunctions.onPersonClick(this, person)
-    }
-
-    @OptIn(DelicateCoroutinesApi::class)
-    val swipeToDeleteCallBack = object : SwipeToDeleteCallBack() {
-        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
-            val position = viewHolder.adapterPosition
-            val personList = adapter.dataList
-            val person = adapter.dataList[position]
-
-            personList.removeAt(position)
-            adapter.notifyItemRemoved(position)
-
-            MainScope().launch(Dispatchers.IO) {
-                Repository.getInstance(applicationContext).deletePerson(person)
-            }
-            Snackbar.make(
-                main_activity_layout,
-                "You removed ${person.name}!",
-                Snackbar.LENGTH_LONG
-            )
-                .setAction("Undo") {
-                    personList.add(position, person)
-                    adapter.notifyItemInserted(position)
-                    GlobalScope.launch(Dispatchers.IO) {
-                        Repository.getInstance(applicationContext).addPerson(person)
-                    }
-                }.show()
-        }
-    }
-
-    fun fab() {
-
-    }
-
-    private fun createRecyclerView() {
-        val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
-        recyclerView.adapter = adapter
-        val peopleListLiveData = Repository.getInstance(this).getAllPeopleAsLiveData()
-        peopleListLiveData.observe(this) { personList ->
-            val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallBack)
-            itemTouchHelper.attachToRecyclerView(recyclerView)
-            adapter.updateRecyclerView(personList)
-        }
     }
 
     private fun logoutUser() {

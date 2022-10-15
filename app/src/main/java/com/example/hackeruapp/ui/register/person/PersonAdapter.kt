@@ -37,13 +37,17 @@ class PersonAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val person = dataList[position]
         holder.textView.text = person.name
-        when (person.imageType) {
-            null -> Glide.with(context).load(R.drawable.ic_person).centerInside()
-                .into(holder.imageView)
-            IMAGE_TYPE.URI -> holder.imageView.setImageURI(Uri.parse(person.imagePath))
-            IMAGE_TYPE.URL -> Glide.with(context).load(person.imagePath).into(holder.imageView)
-            IMAGE_TYPE.BMP -> Glide.with(context).asBitmap().load(person.imagePath).into(holder.imageView)
-        }
+
+
+//        when (person.imageType) {
+//            null -> Glide.with(context).load(R.drawable.ic_person).centerInside()
+//                .into(holder.imageView)
+//            IMAGE_TYPE.URI -> holder.imageView.setImageURI(Uri.parse(person.imagePath))
+//            IMAGE_TYPE.URL -> Glide.with(context).load(person.imagePath).into(holder.imageView)
+//            IMAGE_TYPE.BMP -> Glide.with(context).asBitmap().load(person.imagePath).into(holder.imageView)
+//        }
+
+        Glide.with(context).load(person.imagePath).into(holder.imageView)
 
 
         holder.imageView.setOnClickListener {

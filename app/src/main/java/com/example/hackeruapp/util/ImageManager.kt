@@ -1,19 +1,27 @@
 package com.example.hackeruapp.util
 
+import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.requestPermissions
+import androidx.core.content.ContextCompat
 import com.example.hackeruapp.api.ApiInterface
 import com.example.hackeruapp.api.ApiResponse
 import com.example.hackeruapp.data.Repository
 import com.example.hackeruapp.model.person.IMAGE_TYPE
 import com.example.hackeruapp.model.person.Person
+import com.example.hackeruapp.ui.MainActivity
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -27,10 +35,15 @@ import kotlin.concurrent.thread
 
 object ImageManager {
 
+    private final val REQUEST_CODE = 1
+
     fun takePicture(person: Person, getContent: ActivityResultLauncher<Intent>) {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         getContent.launch(intent)
     }
+
+
+
 
     @OptIn(DelicateCoroutinesApi::class)
     fun onImageResultFromCamera(

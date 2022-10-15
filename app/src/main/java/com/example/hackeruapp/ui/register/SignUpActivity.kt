@@ -7,13 +7,11 @@ import android.widget.Toast
 import android.widget.Toast.makeText
 import com.example.hackeruapp.R
 import com.example.hackeruapp.databinding.ActivitySignupBinding
-import com.google.firebase.auth.FacebookAuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_signup.*
 
 class SignUpActivity : AppCompatActivity() {
 
-    private lateinit var facebookAuth: FacebookAuthCredential
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var binding: ActivitySignupBinding
 
@@ -21,12 +19,14 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         goToLoginActivityOnClick()
 
         binding.directToLoginTv.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left)
+            finish()
 
         }
     }
@@ -47,6 +47,7 @@ class SignUpActivity : AppCompatActivity() {
             if (it.isSuccessful) {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
+                finish()
                 makeText(this, "Signed up successfully!", Toast.LENGTH_LONG).show()
 
             } else makeText(this, it.exception?.message, Toast.LENGTH_SHORT).show()
